@@ -19,26 +19,25 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User implements UserDetails {
+public class User extends Timestamped implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String nickname;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 50)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String introduce;
 
     @Column(name = "profile_image_url")
