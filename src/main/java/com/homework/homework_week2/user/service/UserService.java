@@ -36,6 +36,11 @@ public class UserService {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
 
+        // 비밀번호에 닉네임과 같은 값이 포함되어있는 지 검사
+        if (requestDto.getPassword().contains(requestDto.getNickname())) {
+            throw new IllegalArgumentException("비밀번호에 닉네임이 포함될 수 없습니다.");
+        }
+
         // 회원 등록
         userRepository.save(User.builder()
                 .name(requestDto.getName())
