@@ -49,33 +49,6 @@ public class FileManagerService {
         return null;
     }
 
-    public String saveApiFile(String userLoginId, String imageUrl) {
-        String directoryName = userLoginId + "_" + System.currentTimeMillis() + "/";
-        String filePath = FILE_UPLOAD_PATH + directoryName;
-
-        // 디렉토리 생성
-        File directory = new File(filePath);
-        if (directory.mkdir() == false) {
-            return null; // 디렉토리 생성 시 실패하면 null을 리턴
-        }
-
-        try {
-            URL url = new URL(imageUrl);
-            String ext = imageUrl.substring(imageUrl.lastIndexOf(".") + 1); // 확장자
-            BufferedImage image = ImageIO.read(url);
-            String saveFileName = getUuid();
-            File file = new File(filePath + saveFileName + "." + ext);
-
-            ImageIO.write(image, ext, file);
-
-            return "/images/" + directoryName + saveFileName + "." + ext;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
     public static String getUuid() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
