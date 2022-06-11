@@ -4,14 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
-public class PostDto {
+public class PostRequestDto {
     private String title;
     private String content;
-    private String imageUrl;
-    private int viewCount;
-    private LocalDateTime createdAt;
+    private MultipartFile file;
 }
