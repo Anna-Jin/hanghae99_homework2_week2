@@ -31,6 +31,12 @@ public class UserRestController {
         return true;
     }
 
+    /**
+     * 로그인
+     * @param email
+     * @param password
+     * @return
+     */
     @PostMapping("/login")
     public String login(
             @RequestParam String email,

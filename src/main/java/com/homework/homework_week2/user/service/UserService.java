@@ -58,7 +58,12 @@ public class UserService {
         return true;
     }
 
-
+    /**
+     * 로그인
+     * @param email
+     * @param password
+     * @return
+     */
     public String login(String email, String password) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("잘못된 이메일입니다."));
 
