@@ -1,5 +1,8 @@
 package com.homework.homework_week2.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.homework.homework_week2.post.domain.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,8 +20,8 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Builder @AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User extends Timestamped implements UserDetails {
 
     @Id
@@ -42,6 +45,11 @@ public class User extends Timestamped implements UserDetails {
 
     @Column(name = "profile_image_url")
     private String profileImageUrl;
+
+
+    // 연관관계 매핑
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+//    private List<Post> posts;
 
 
     // 이거 존재 이유 알아내기
@@ -80,5 +88,6 @@ public class User extends Timestamped implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 
 }
