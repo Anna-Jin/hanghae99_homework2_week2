@@ -1,4 +1,4 @@
-package com.homework.homework_week2.exception;
+package com.homework.homework_week2.exception.exception;
 
 import com.homework.homework_week2.exception.errorCode.ErrorCode;
 import lombok.Getter;

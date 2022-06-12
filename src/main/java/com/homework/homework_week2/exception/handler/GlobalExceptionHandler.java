@@ -1,7 +1,9 @@
-package com.homework.homework_week2.exception;
+package com.homework.homework_week2.exception.handler;
 
 import com.homework.homework_week2.exception.errorCode.CommonErrorCode;
 import com.homework.homework_week2.exception.errorCode.ErrorCode;
+import com.homework.homework_week2.exception.exception.RestApiException;
+import com.homework.homework_week2.exception.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,19 +22,20 @@ import java.util.stream.Collectors;
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    // RuntimeException 처리
     @ExceptionHandler(RestApiException.class)
     public ResponseEntity<Object> handleCustomException(RestApiException e) {
-        ErrorCode errorCode = e.getErrorCode();
-        return handleExceptionInternal(errorCode);
+        return handleExceptionInternal(e.getErrorCode());
     }
 
+    // IllegalArgumentException 에러 처리
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Object> handleIllegalArgument(IllegalArgumentException e) {
         log.warn("handleIllegalArgument", e);
-        ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
-        return handleExceptionInternal(errorCode, e.getMessage());
+        return handleExceptionInternal(CommonErrorCode.INVALID_PARAMETER, e.getMessage());
     }
 
+    // @Valid 어노테이션으로 넘어오는 에러 처리
     @Override
     public ResponseEntity<Object> handleBindException(
             BindException e,
@@ -40,22 +43,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             HttpStatus status,
             WebRequest request) {
         log.warn("handleIllegalArgument", e);
-        ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
-        return handleExceptionInternal(e, errorCode);
+        return handleExceptionInternal(e, CommonErrorCode.INVALID_PARAMETER);
     }
 
+    // 대부분의 에러 처리
     @ExceptionHandler({Exception.class})
     public ResponseEntity<Object> handleAllException(Exception ex) {
         log.warn("handleAllException", ex);
-        ErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
-        return handleExceptionInternal(errorCode);
+        return handleExceptionInternal(CommonErrorCode.INTERNAL_SERVER_ERROR);
     }
 
+    // RuntimeException과 대부분의 에러 처리 메세지를 보내기 위한 메소드
     private ResponseEntity<Object> handleExceptionInternal(ErrorCode errorCode) {
         return ResponseEntity.status(errorCode.getHttpStatus())
                 .body(makeErrorResponse(errorCode));
     }
 
+    // 코드 가독성을 위해 에러 처리 메세지를 만드는 메소드 분리
     private ErrorResponse makeErrorResponse(ErrorCode errorCode) {
         return ErrorResponse.builder()
                 .code(errorCode.name())
@@ -68,6 +72,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(makeErrorResponse(errorCode, message));
     }
 
+    // 코드 가독성을 위해 에러 처리 메세지를 만드는 메소드 분리
     private ErrorResponse makeErrorResponse(ErrorCode errorCode, String message) {
         return ErrorResponse.builder()
                 .code(errorCode.name())
@@ -75,11 +80,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
     }
 
+    // @Valid 어노테이션으로 넘어오는 에러 처리 메세지를 보내기 위한 메소드
     private ResponseEntity<Object> handleExceptionInternal(BindException e, ErrorCode errorCode) {
         return ResponseEntity.status(errorCode.getHttpStatus())
                 .body(makeErrorResponse(e, errorCode));
     }
 
+    // 코드 가독성을 위해 에러 처리 메세지를 만드는 메소드 분리
     private ErrorResponse makeErrorResponse(BindException e, ErrorCode errorCode) {
         List<ErrorResponse.ValidationError> validationErrorList = e.getBindingResult()
                 .getFieldErrors()

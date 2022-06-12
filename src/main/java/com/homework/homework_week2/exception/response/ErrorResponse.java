@@ -1,4 +1,4 @@
-package com.homework.homework_week2.exception;
+package com.homework.homework_week2.exception.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
