@@ -1,4 +1,4 @@
-package com.homework.homework_week2.user.repoistory;
+package com.homework.homework_week2.user.repository;
 
 import com.homework.homework_week2.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
