@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Getter
 @NoArgsConstructor
 @Builder @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User extends Timestamped implements UserDetails {
 
     @Id
