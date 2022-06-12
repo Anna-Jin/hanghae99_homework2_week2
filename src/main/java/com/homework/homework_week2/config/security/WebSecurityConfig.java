@@ -18,13 +18,13 @@ public class WebSecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    // 암호화에 필요한 PasswordEncoder 를 Bean 등록합니다.
+    // 암호화에 필요한 PasswordEncoder 를 Bean을 등록합니다.
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    // authenticationManager를 Bean 등록합니다.
+    // authenticationManager를 Bean을 등록합니다.
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
