@@ -4,7 +4,7 @@ import com.homework.homework_week2.common.FileManagerService;
 import com.homework.homework_week2.config.security.JwtTokenProvider;
 import com.homework.homework_week2.user.domain.User;
 import com.homework.homework_week2.user.dto.RegisterRequestDto;
-import com.homework.homework_week2.user.repoistory.UserRepository;
+import com.homework.homework_week2.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;

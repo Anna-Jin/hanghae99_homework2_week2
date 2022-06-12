@@ -1,6 +1,6 @@
 package com.homework.homework_week2.config.security.user;
 
-import com.homework.homework_week2.user.repoistory.UserRepository;
+import com.homework.homework_week2.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

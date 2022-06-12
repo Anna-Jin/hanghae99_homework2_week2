@@ -5,7 +5,7 @@ import com.homework.homework_week2.post.domain.Post;
 import com.homework.homework_week2.post.dto.PostRequestDto;
 import com.homework.homework_week2.post.repository.PostRepository;
 import com.homework.homework_week2.user.domain.User;
-import com.homework.homework_week2.user.repoistory.UserRepository;
+import com.homework.homework_week2.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
