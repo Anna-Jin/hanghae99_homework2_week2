@@ -50,7 +50,7 @@ public class Post extends Timestamped{
         this.content = content;
         this.imageUrl = imageUrl;
         this.viewCount = viewCount;
-        this.user = user;
+//        this.user = user;
     }
 
     public void update(PostDto postDto) {
