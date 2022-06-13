@@ -16,6 +16,11 @@ public class FileManagerService {
     public final static String FILE_UPLOAD_PATH = "/Users/jin-yujin/Desktop/yujin/sparta/week5~7/homework_week2/image/";
 
     public String savaFile(String email, MultipartFile file) {
+        if (file.getOriginalFilename().isBlank()) {
+            return null;
+        }
+
+
         String directoryName = email + "_" + System.currentTimeMillis() + "/";
         String filePath = FILE_UPLOAD_PATH + directoryName;
 
