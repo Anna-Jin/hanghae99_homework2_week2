@@ -2,12 +2,16 @@ package com.homework.homework_week2.post.service;
 
 import com.homework.homework_week2.common.FileManagerService;
 import com.homework.homework_week2.post.domain.Post;
+import com.homework.homework_week2.post.dto.PostDto;
 import com.homework.homework_week2.post.dto.PostRequestDto;
 import com.homework.homework_week2.post.repository.PostRepository;
 import com.homework.homework_week2.user.domain.User;
 import com.homework.homework_week2.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,10 +20,12 @@ public class PostService {
     private final FileManagerService fileManagerService;
 
     private final PostRepository postRepository;
+
     private final UserRepository userRepository;
 
-    public boolean addPost(Long userId, PostRequestDto postRequestDto) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
+
+    public boolean addPost(Long id, PostRequestDto postRequestDto) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
 
         Post post = Post.builder()
                 .title(postRequestDto.getTitle())
@@ -34,4 +40,22 @@ public class PostService {
 
         return true;
     }
+
+    public List<PostDto> getPosts() {
+        List<Post> foundPosts = postRepository.findAll();
+
+        List<PostDto> posts = new ArrayList<>();
+        for (Post post : foundPosts) {
+            PostDto postDto = PostDto.builder()
+                    .title(post.getTitle())
+                    .content(post.getContent())
+                    .imageUrl(post.getImageUrl())
+                    .build();
+
+            posts.add(postDto);
+        }
+
+        return posts;
+    }
+
 }

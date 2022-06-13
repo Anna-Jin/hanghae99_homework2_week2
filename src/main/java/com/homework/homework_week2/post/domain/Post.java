@@ -3,6 +3,7 @@ package com.homework.homework_week2.post.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.homework.homework_week2.post.dto.PostDto;
+import com.homework.homework_week2.timestamp.Timestamped;
 import com.homework.homework_week2.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Post extends Timestamped{
+public class Post extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,9 +35,9 @@ public class Post extends Timestamped{
 
 
     // 연관관계 매핑
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "USER_ID", nullable = false)
-//    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
 
 
 
@@ -50,7 +51,7 @@ public class Post extends Timestamped{
         this.content = content;
         this.imageUrl = imageUrl;
         this.viewCount = viewCount;
-//        this.user = user;
+        this.user = user;
     }
 
     public void update(PostDto postDto) {
