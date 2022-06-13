@@ -1,5 +1,7 @@
 package com.homework.homework_week2.config.security;
 
+import com.homework.homework_week2.config.security.jwt.JwtAuthenticationFilter;
+import com.homework.homework_week2.config.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;

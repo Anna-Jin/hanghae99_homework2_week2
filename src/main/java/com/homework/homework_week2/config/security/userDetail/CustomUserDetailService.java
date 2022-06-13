@@ -1,4 +1,4 @@
-package com.homework.homework_week2.config.security.user;
+package com.homework.homework_week2.config.security.userDetail;
 
 import com.homework.homework_week2.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

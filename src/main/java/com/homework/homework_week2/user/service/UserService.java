@@ -1,7 +1,7 @@
 package com.homework.homework_week2.user.service;
 
 import com.homework.homework_week2.common.FileManagerService;
-import com.homework.homework_week2.config.security.JwtTokenProvider;
+import com.homework.homework_week2.config.security.jwt.JwtTokenProvider;
 import com.homework.homework_week2.user.domain.User;
 import com.homework.homework_week2.user.dto.RegisterRequestDto;
 import com.homework.homework_week2.user.repository.UserRepository;

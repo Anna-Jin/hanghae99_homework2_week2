@@ -1,4 +1,4 @@
-package com.homework.homework_week2.config.security;
+package com.homework.homework_week2.config.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
