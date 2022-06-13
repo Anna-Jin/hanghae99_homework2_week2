@@ -50,6 +50,7 @@ public class PostService {
                     .title(post.getTitle())
                     .content(post.getContent())
                     .imageUrl(post.getImageUrl())
+                    .createdAt(post.getCreatedAt())
                     .build();
 
             posts.add(postDto);

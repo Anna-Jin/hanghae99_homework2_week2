@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/homework2?serverTimezone=UTC&useLegacyDatetimeCode=false
+    url: jdbc:mysql://localhost:3306/homework2?serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false
     username: root
     password: cz_hyy6848
 
@@ -13,7 +13,7 @@ spring:
     open-in-view: false
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
       use-new-id-generator-mappings: false
     properties:
       hibernate.format_sql: true
