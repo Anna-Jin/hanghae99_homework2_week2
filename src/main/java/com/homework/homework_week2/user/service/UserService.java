@@ -47,8 +47,7 @@ public class UserService {
                     fileManagerService.savaFile(requestDto.getEmail(), requestDto.getFile()) // 파일 저장
                 )
                 .roles(Collections.singletonList("ROLE_USER"))
-                .build()
-        );
+                .build());
 
         return true;
     }
