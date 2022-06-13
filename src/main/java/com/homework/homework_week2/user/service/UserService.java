@@ -69,6 +69,11 @@ public class UserService {
         return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
     }
 
+    /**
+     * 유저 정보 조회
+     * @param id
+     * @return
+     */
     public UserResponseDto getUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 

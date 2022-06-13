@@ -48,6 +48,11 @@ public class UserRestController {
         return userService.login(email, password);
     }
 
+    /**
+     * 유저 정보 조회
+     * @param userDetails
+     * @return
+     */
     @GetMapping("/user")
     public UserResponseDto getUserInfo(@AuthenticationPrincipal User userDetails) {
         return userService.getUser(userDetails.getId());
