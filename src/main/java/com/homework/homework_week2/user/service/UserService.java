@@ -71,11 +71,11 @@ public class UserService {
 
     /**
      * 유저 정보 조회
-     * @param id
+     * @param userDetails
      * @return
      */
-    public UserResponseDto getUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+    public UserResponseDto getUser(User userDetails) {
+        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
         UserResponseDto userInfo = UserResponseDto.builder()
                 .name(user.getName())

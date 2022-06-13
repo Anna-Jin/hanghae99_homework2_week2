@@ -55,7 +55,7 @@ public class UserRestController {
      */
     @GetMapping("/user")
     public UserResponseDto getUserInfo(@AuthenticationPrincipal User userDetails) {
-        return userService.getUser(userDetails.getId());
+        return userService.getUser(userDetails);
     }
 
 }

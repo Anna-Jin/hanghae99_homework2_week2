@@ -3,6 +3,7 @@ package com.homework.homework_week2.user.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.homework.homework_week2.post.domain.Post;
+import com.homework.homework_week2.timestamp.Timestamped;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,16 +41,15 @@ public class User extends Timestamped implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "text")
     private String introduce;
 
     @Column(name = "profile_image_url")
     private String profileImageUrl;
 
-
     // 연관관계 매핑
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-//    private List<Post> posts;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts;
 
 
     // 이거 존재 이유 알아내기
