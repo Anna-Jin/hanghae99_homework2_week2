@@ -1,8 +1,11 @@
 package com.homework.homework_week2.user;
 
+import com.homework.homework_week2.user.domain.User;
 import com.homework.homework_week2.user.dto.RegisterRequestDto;
+import com.homework.homework_week2.user.dto.UserResponseDto;
 import com.homework.homework_week2.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,7 +30,6 @@ public class UserRestController {
     public boolean register(@ModelAttribute @Valid RegisterRequestDto requestDto) {
         userService.register(requestDto);
 
-        // 에러처리 할 것.
         return true;
     }
 
@@ -44,6 +46,11 @@ public class UserRestController {
     ) {
 
         return userService.login(email, password);
+    }
+
+    @GetMapping("/user")
+    public UserResponseDto getUserInfo(@AuthenticationPrincipal User userDetails) {
+        return userService.getUser(userDetails.getId());
     }
 
 }

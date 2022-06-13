@@ -4,6 +4,7 @@ import com.homework.homework_week2.common.FileManagerService;
 import com.homework.homework_week2.config.security.jwt.JwtTokenProvider;
 import com.homework.homework_week2.user.domain.User;
 import com.homework.homework_week2.user.dto.RegisterRequestDto;
+import com.homework.homework_week2.user.dto.UserResponseDto;
 import com.homework.homework_week2.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -66,5 +67,20 @@ public class UserService {
         }
 
         return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+    }
+
+    public UserResponseDto getUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        UserResponseDto userInfo = UserResponseDto.builder()
+                .name(user.getName())
+                .nickname(user.getNickname())
+                .email(user.getEmail())
+                .introduce(user.getIntroduce())
+                .profileImageUrl(user.getProfileImageUrl())
+                .createdAt(user.getCreatedAt())
+                .build();
+
+        return userInfo;
     }
 }
