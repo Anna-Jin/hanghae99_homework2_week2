@@ -1,4 +1,4 @@
-package com.homework.homework_week2.user.domain;
+package com.homework.homework_week2.timestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
