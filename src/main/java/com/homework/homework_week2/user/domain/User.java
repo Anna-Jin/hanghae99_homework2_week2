@@ -1,5 +1,6 @@
 package com.homework.homework_week2.user.domain;
 
+import com.homework.homework_week2.comment.domain.Comment;
 import com.homework.homework_week2.post.domain.Post;
 import com.homework.homework_week2.timestamp.Timestamped;
 import lombok.AllArgsConstructor;
@@ -48,12 +49,15 @@ public class User extends Timestamped implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+
 
     // 이거 존재 이유 알아내기
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
-    
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
