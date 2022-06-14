@@ -5,7 +5,6 @@ import com.homework.homework_week2.post.dto.PostRequestDto;
 import com.homework.homework_week2.post.service.PostService;
 import com.homework.homework_week2.user.domain.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,7 +62,7 @@ public class PostRestController {
      * @param userDetails
      * @return
      */
-    @PutMapping("/posts/{postId")
+    @PutMapping("/posts/{postId}")
     public boolean updatePost(
             @PathVariable(value = "postId", required = false) Long postId,
             @ModelAttribute PostRequestDto postRequestDto,
