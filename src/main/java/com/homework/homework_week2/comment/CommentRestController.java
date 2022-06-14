@@ -30,12 +30,26 @@ public class CommentRestController {
         return commentService.addComment(userDetails, postId, commentRequestDto);
     }
 
+    /**
+     * 댓글 수정
+     * @param commentId
+     * @param commentRequestDto
+     * @return
+     */
     @PutMapping("/comments/{commentId}")
     public boolean updateComment(
             @PathVariable(required = false) Long commentId,
             @RequestBody CommentRequestDto commentRequestDto
     ) {
         commentService.updateComment(commentId, commentRequestDto);
+        return true;
+    }
+
+    @DeleteMapping("/comment/{commentId}")
+    public boolean deleteComment(
+            @PathVariable(required = false) Long commentId
+    ) {
+
         return true;
     }
 }
