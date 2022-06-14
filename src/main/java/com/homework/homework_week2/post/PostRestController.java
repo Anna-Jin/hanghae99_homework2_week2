@@ -17,6 +17,12 @@ public class PostRestController {
 
     private final PostService postService;
 
+    /**
+     * 게시물 생성
+     * @param userDetails
+     * @param postRequestDto
+     * @return
+     */
     @PostMapping("/posts")
     public boolean addPost(
             @AuthenticationPrincipal User userDetails,
@@ -28,9 +34,21 @@ public class PostRestController {
         return result;
     }
 
+    /**
+     * 게시물 목록 조회
+     * @return
+     */
     @GetMapping("/posts")
     public List<PostDto> getPosts() {
         return postService.getPosts();
     }
 
+
+//    @GetMapping("/posts/{postId}")
+//    public PostDto getPost(
+//            @AuthenticationPrincipal User userDetails,
+//            @PathVariable(value = "postId", required = false) Long postId
+//    ) {
+//
+//    }
 }

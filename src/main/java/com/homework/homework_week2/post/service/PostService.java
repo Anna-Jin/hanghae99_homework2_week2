@@ -23,7 +23,12 @@ public class PostService {
 
     private final UserRepository userRepository;
 
-
+    /**
+     * 게시물 생성
+     * @param id
+     * @param postRequestDto
+     * @return
+     */
     public boolean addPost(Long id, PostRequestDto postRequestDto) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
 
@@ -41,6 +46,11 @@ public class PostService {
         return true;
     }
 
+
+    /**
+     * 게시물 목록 조회
+     * @return
+     */
     public List<PostDto> getPosts() {
         List<Post> foundPosts = postRepository.findAll();
 

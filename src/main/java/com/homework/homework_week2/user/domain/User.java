@@ -1,7 +1,5 @@
 package com.homework.homework_week2.user.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.homework.homework_week2.post.domain.Post;
 import com.homework.homework_week2.timestamp.Timestamped;
 import lombok.AllArgsConstructor;
@@ -55,7 +53,7 @@ public class User extends Timestamped implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
-   
+    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
