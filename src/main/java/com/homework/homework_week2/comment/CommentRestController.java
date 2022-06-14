@@ -13,6 +13,13 @@ import org.springframework.web.bind.annotation.*;
 public class CommentRestController {
     private final CommentService commentService;
 
+    /**
+     * 댓글 생성
+     * @param userDetails
+     * @param postId
+     * @param commentDto
+     * @return
+     */
     @PostMapping("/comments/{postId}")
     public boolean addComment(
             @AuthenticationPrincipal User userDetails,
@@ -21,5 +28,14 @@ public class CommentRestController {
             ) {
 
         return commentService.addComent(userDetails, postId, commentDto);
+    }
+
+    @PutMapping("/comments/{commentId}")
+    public boolean updateComment(
+            @PathVariable(required = false) Long commentId,
+            @RequestBody CommentDto commentDto
+    ) {
+        commentService.updateComment(commentId, commentDto);
+        return true;
     }
 }
