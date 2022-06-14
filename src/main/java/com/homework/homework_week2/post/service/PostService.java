@@ -69,7 +69,7 @@ public class PostService {
                     .comments(post.getComments().stream()
                             .map(CommentResponseDto::new)
                             .collect(Collectors.toList()))
-                    .viewCount(post.getViewCount() + 1)
+                    .viewCount(post.getViewCount())
                     .createdAt(post.getCreatedAt())
                     .build();
 
@@ -88,6 +88,8 @@ public class PostService {
     public PostResponseDto getPost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
 
+        post.updateViewCount(post.getViewCount() + 1L);
+
         // entity -> dto
         PostResponseDto postResponseDto = PostResponseDto.builder()
                 .postId(post.getId())
@@ -100,8 +102,6 @@ public class PostService {
                 .viewCount(post.getViewCount())
                 .createdAt(post.getCreatedAt())
                 .build();
-
-        post.updateViewCount(postResponseDto.getViewCount() + 1L);
 
         return postResponseDto;
     }

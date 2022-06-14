@@ -49,7 +49,7 @@ public class CommentRestController {
     public boolean deleteComment(
             @PathVariable(required = false) Long commentId
     ) {
-
+        commentService.deleteComment(commentId);
         return true;
     }
 }
