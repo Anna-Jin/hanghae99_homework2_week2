@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum UserErrorCode implements ErrorCode {
 
     INACTIVE_USER(HttpStatus.FORBIDDEN, "User is inactive"),
+    NULL_FILE(HttpStatus.INTERNAL_SERVER_ERROR, "file is required")
     ;
 
     private final HttpStatus httpStatus;
