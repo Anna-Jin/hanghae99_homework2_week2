@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class PostDto {
+    private Long postId;
     private String title;
     private String content;
     private String imageUrl;
@@ -12,7 +13,8 @@ public class PostDto {
     private String createdAt;
 
     @Builder
-    public PostDto(String title, String content, String imageUrl, int viewCount, String createdAt) {
+    public PostDto(Long postId, String title, String content, String imageUrl, int viewCount, String createdAt) {
+        this.postId = postId;
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
