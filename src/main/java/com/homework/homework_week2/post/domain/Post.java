@@ -2,6 +2,7 @@ package com.homework.homework_week2.post.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.homework.homework_week2.comment.domain.Comment;
 import com.homework.homework_week2.post.dto.PostDto;
 import com.homework.homework_week2.timestamp.Timestamped;
 import com.homework.homework_week2.user.domain.User;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,7 +26,7 @@ public class Post extends Timestamped {
     @Column(nullable = false, length = 25)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "text")
     private String content;
 
     @Column(nullable = false, name = "image_url")
@@ -41,9 +43,9 @@ public class Post extends Timestamped {
 
 
 
-//    @OrderBy(value = "createdAt DESC")
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-//    private List<Comment> comments;
+    @OrderBy(value = "createdAt DESC")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Comment> comments;
 
     @Builder
     public Post(String title, String content, String imageUrl, int viewCount, User user) {
