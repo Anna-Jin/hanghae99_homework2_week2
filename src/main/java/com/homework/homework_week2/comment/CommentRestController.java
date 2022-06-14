@@ -1,7 +1,7 @@
 package com.homework.homework_week2.comment;
 
 import com.homework.homework_week2.comment.service.CommentService;
-import com.homework.homework_week2.post.dto.CommentDto;
+import com.homework.homework_week2.comment.dto.CommentRequestDto;
 import com.homework.homework_week2.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,25 +17,25 @@ public class CommentRestController {
      * 댓글 생성
      * @param userDetails
      * @param postId
-     * @param commentDto
+     * @param commentRequestDto
      * @return
      */
     @PostMapping("/comments/{postId}")
     public boolean addComment(
             @AuthenticationPrincipal User userDetails,
             @PathVariable(value = "postId", required = false) Long postId,
-            @RequestBody CommentDto commentDto
+            @RequestBody CommentRequestDto commentRequestDto
             ) {
 
-        return commentService.addComent(userDetails, postId, commentDto);
+        return commentService.addComment(userDetails, postId, commentRequestDto);
     }
 
     @PutMapping("/comments/{commentId}")
     public boolean updateComment(
             @PathVariable(required = false) Long commentId,
-            @RequestBody CommentDto commentDto
+            @RequestBody CommentRequestDto commentRequestDto
     ) {
-        commentService.updateComment(commentId, commentDto);
+        commentService.updateComment(commentId, commentRequestDto);
         return true;
     }
 }

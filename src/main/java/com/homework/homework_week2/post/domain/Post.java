@@ -33,7 +33,7 @@ public class Post extends Timestamped {
     private String imageUrl;
 
     @Column(name = "view_count")
-    private int viewCount;
+    private Long viewCount = 0L;
 
 
     // 연관관계 매핑
@@ -46,7 +46,7 @@ public class Post extends Timestamped {
     private List<Comment> comments;
 
     @Builder
-    public Post(String title, String content, String imageUrl, int viewCount, User user) {
+    public Post(String title, String content, String imageUrl, Long viewCount, User user) {
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
@@ -58,5 +58,9 @@ public class Post extends Timestamped {
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
+    }
+
+    public void updateViewCount(Long viewCount) {
+        this.viewCount = viewCount;
     }
 }

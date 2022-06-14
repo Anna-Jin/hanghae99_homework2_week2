@@ -3,7 +3,7 @@ package com.homework.homework_week2.comment.service;
 import com.homework.homework_week2.comment.domain.Comment;
 import com.homework.homework_week2.comment.repository.CommentRepository;
 import com.homework.homework_week2.post.domain.Post;
-import com.homework.homework_week2.post.dto.CommentDto;
+import com.homework.homework_week2.comment.dto.CommentRequestDto;
 import com.homework.homework_week2.post.repository.PostRepository;
 import com.homework.homework_week2.user.domain.User;
 import com.homework.homework_week2.user.repository.UserRepository;
@@ -22,12 +22,12 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
 
-    public boolean addComent(User userDetail, Long postId, CommentDto commentDto) {
-        User user = userRepository.findById(userDetail.getId()).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
+    public boolean addComment(User userDetails, Long postId, CommentRequestDto commentRequestDto) {
+        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
 
         Comment comment = Comment.builder()
-                .content(commentDto.getContent())
+                .content(commentRequestDto.getContent())
                 .user(user)
                 .post(post)
                 .build();
@@ -38,10 +38,10 @@ public class CommentService {
     }
 
     @Transactional
-    public boolean updateComment(Long commentId, CommentDto commentDto) {
+    public boolean updateComment(Long commentId, CommentRequestDto commentRequestDto) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
 
-        comment.update(commentDto.getContent());
+        comment.update(commentRequestDto.getContent());
 
         return true;
     }

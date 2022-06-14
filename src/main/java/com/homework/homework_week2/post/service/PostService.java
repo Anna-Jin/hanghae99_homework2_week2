@@ -1,5 +1,7 @@
 package com.homework.homework_week2.post.service;
 
+import com.homework.homework_week2.comment.domain.Comment;
+import com.homework.homework_week2.comment.dto.CommentResponseDto;
 import com.homework.homework_week2.common.FileManagerService;
 import com.homework.homework_week2.exception.errorCode.CustomErrorCode;
 import com.homework.homework_week2.post.domain.Post;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -56,13 +59,17 @@ public class PostService {
         List<Post> foundPosts = postRepository.findAll();
 
         List<PostDto> posts = new ArrayList<>();
+
+        // entity -> dto
         for (Post post : foundPosts) {
             PostDto postDto = PostDto.builder()
                     .postId(post.getId())
                     .title(post.getTitle())
                     .content(post.getContent())
                     .imageUrl(post.getImageUrl())
-                    .comments(post.getComments())
+                    .comments(post.getComments().stream()
+                            .map(CommentResponseDto::new)
+                            .collect(Collectors.toList()))
                     .createdAt(post.getCreatedAt())
                     .build();
 
@@ -86,7 +93,9 @@ public class PostService {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .imageUrl(post.getImageUrl())
-                .comments(post.getComments())
+                .comments(post.getComments().stream()
+                        .map(CommentResponseDto::new)
+                        .collect(Collectors.toList()))
                 .createdAt(post.getCreatedAt())
                 .build();
 
