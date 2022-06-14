@@ -72,6 +72,12 @@ public class PostRestController {
         return true;
     }
 
+    /**
+     * 게시물 삭제
+     * @param userDetails
+     * @param postId
+     * @return
+     */
     @DeleteMapping("/posts/{postId}")
     public boolean deletePost(
             @AuthenticationPrincipal User userDetails,
