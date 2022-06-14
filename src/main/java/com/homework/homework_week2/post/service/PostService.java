@@ -10,6 +10,7 @@ import com.homework.homework_week2.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +69,11 @@ public class PostService {
         return posts;
     }
 
+    /**
+     * 게시물 단건 조회
+     * @param postId
+     * @return
+     */
     public PostDto getPost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
 
@@ -82,4 +88,48 @@ public class PostService {
         return postDto;
     }
 
+    /**
+     * 게시물 수정
+     * @param postId
+     * @param postRequestDto
+     * @param userDetails
+     * @return
+     */
+    @Transactional
+    public boolean updatePost(Long postId, PostRequestDto postRequestDto, User userDetails) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
+
+        // 게시글 이미지 수정
+        String imageUrl = post.getImageUrl();
+
+        String imagePath = null;
+        if (postRequestDto.getFile().getOriginalFilename() != "") {
+            imagePath = fileManagerService.savaFile(userDetails.getEmail(), postRequestDto.getFile());
+
+            if (imageUrl != null && imagePath != null) {
+                fileManagerService.deleteFile(imageUrl);
+            }
+        }
+
+        // 게시글 수정
+        post.update(postRequestDto.getTitle(), postRequestDto.getContent(), imagePath);
+
+        return true;
+    }
+
+
+    public boolean deletePost(User userDetails, Long postId) {
+        // 게시글 이미지 삭제
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
+
+        String imagePath = post.getImageUrl();
+        if (imagePath != null) {
+            fileManagerService.deleteFile(imagePath);
+        }
+
+        // 글 삭제
+        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당하는 사용자가 존재하지 않습니다."));
+
+        return postRepository.deletePostByUserAndId(user, postId);
+    }
 }

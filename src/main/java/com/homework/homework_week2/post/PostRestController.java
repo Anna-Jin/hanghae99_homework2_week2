@@ -55,4 +55,29 @@ public class PostRestController {
     ) {
         return postService.getPost(postId);
     }
+
+    /**
+     * 게시물 수정
+     * @param postId
+     * @param postRequestDto
+     * @param userDetails
+     * @return
+     */
+    @PutMapping("/posts/{postId")
+    public boolean updatePost(
+            @PathVariable(value = "postId", required = false) Long postId,
+            @ModelAttribute PostRequestDto postRequestDto,
+            @AuthenticationPrincipal User userDetails
+    ) {
+        postService.updatePost(postId, postRequestDto, userDetails);
+        return true;
+    }
+
+    @DeleteMapping("/posts/{postId}")
+    public boolean deletePost(
+            @AuthenticationPrincipal User userDetails,
+            @PathVariable(value = "postId", required = false) Long postId) {
+        postService.deletePost(userDetails, postId);
+        return true;
+    }
 }
