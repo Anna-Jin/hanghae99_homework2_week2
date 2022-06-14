@@ -30,5 +30,12 @@ public class CommentRestController {
         return commentService.addComent(userDetails, postId, commentDto);
     }
 
-    
+    @PutMapping("/comments/{commentId}")
+    public boolean updateComment(
+            @PathVariable(required = false) Long commentId,
+            @RequestBody CommentDto commentDto
+    ) {
+        commentService.updateComment(commentId, commentDto);
+        return true;
+    }
 }

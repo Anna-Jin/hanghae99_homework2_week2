@@ -10,6 +10,8 @@ import com.homework.homework_week2.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -31,6 +33,15 @@ public class CommentService {
                 .build();
 
         commentRepository.save(comment);
+
+        return true;
+    }
+
+    @Transactional
+    public boolean updateComment(Long commentId, CommentDto commentDto) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
+
+        comment.update(commentDto.getContent());
 
         return true;
     }
