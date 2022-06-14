@@ -1,7 +1,6 @@
 package com.homework.homework_week2.post;
 
-import com.homework.homework_week2.post.domain.Post;
-import com.homework.homework_week2.post.dto.PostDto;
+import com.homework.homework_week2.post.dto.PostResponseDto;
 import com.homework.homework_week2.post.dto.PostRequestDto;
 import com.homework.homework_week2.post.service.PostService;
 import com.homework.homework_week2.user.domain.User;
@@ -40,7 +39,7 @@ public class PostRestController {
      * @return
      */
     @GetMapping("/posts")
-    public List<PostDto> getPosts() {
+    public List<PostResponseDto> getPosts() {
         return postService.getPosts();
     }
 
@@ -50,12 +49,10 @@ public class PostRestController {
      * @return
      */
     @GetMapping("/posts/{postId}")
-    public PostDto getPost(
+    public PostResponseDto getPost(
             @PathVariable(value = "postId", required = false) Long postId
     ) {
-        PostDto post = postService.getPost(postId);
-
-        return post;
+        return postService.getPost(postId);
     }
 
     /**

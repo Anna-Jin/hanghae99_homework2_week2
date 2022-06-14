@@ -3,7 +3,6 @@ package com.homework.homework_week2.post.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.homework.homework_week2.comment.domain.Comment;
-import com.homework.homework_week2.post.dto.PostDto;
 import com.homework.homework_week2.timestamp.Timestamped;
 import com.homework.homework_week2.user.domain.User;
 import lombok.Builder;
@@ -33,7 +32,7 @@ public class Post extends Timestamped {
     private String imageUrl;
 
     @Column(name = "view_count")
-    private Long viewCount = 0L;
+    private Long viewCount;
 
 
     // 연관관계 매핑
@@ -50,7 +49,7 @@ public class Post extends Timestamped {
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
-        this.viewCount = viewCount;
+        this.viewCount = 0L;
         this.user = user;
     }
 

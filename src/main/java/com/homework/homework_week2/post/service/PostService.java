@@ -1,11 +1,10 @@
 package com.homework.homework_week2.post.service;
 
-import com.homework.homework_week2.comment.domain.Comment;
 import com.homework.homework_week2.comment.dto.CommentResponseDto;
 import com.homework.homework_week2.common.FileManagerService;
 import com.homework.homework_week2.exception.errorCode.CustomErrorCode;
 import com.homework.homework_week2.post.domain.Post;
-import com.homework.homework_week2.post.dto.PostDto;
+import com.homework.homework_week2.post.dto.PostResponseDto;
 import com.homework.homework_week2.post.dto.PostRequestDto;
 import com.homework.homework_week2.post.repository.PostRepository;
 import com.homework.homework_week2.user.domain.User;
@@ -55,14 +54,14 @@ public class PostService {
      * 게시물 목록 조회
      * @return
      */
-    public List<PostDto> getPosts() {
+    public List<PostResponseDto> getPosts() {
         List<Post> foundPosts = postRepository.findAll();
 
-        List<PostDto> posts = new ArrayList<>();
+        List<PostResponseDto> posts = new ArrayList<>();
 
         // entity -> dto
         for (Post post : foundPosts) {
-            PostDto postDto = PostDto.builder()
+            PostResponseDto postResponseDto = PostResponseDto.builder()
                     .postId(post.getId())
                     .title(post.getTitle())
                     .content(post.getContent())
@@ -70,10 +69,11 @@ public class PostService {
                     .comments(post.getComments().stream()
                             .map(CommentResponseDto::new)
                             .collect(Collectors.toList()))
+                    .viewCount(post.getViewCount() + 1)
                     .createdAt(post.getCreatedAt())
                     .build();
 
-            posts.add(postDto);
+            posts.add(postResponseDto);
         }
 
         return posts;
@@ -84,11 +84,12 @@ public class PostService {
      * @param postId
      * @return
      */
-    public PostDto getPost(Long postId) {
+    @Transactional
+    public PostResponseDto getPost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
 
         // entity -> dto
-        PostDto postDto = PostDto.builder()
+        PostResponseDto postResponseDto = PostResponseDto.builder()
                 .postId(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
@@ -96,10 +97,13 @@ public class PostService {
                 .comments(post.getComments().stream()
                         .map(CommentResponseDto::new)
                         .collect(Collectors.toList()))
+                .viewCount(post.getViewCount())
                 .createdAt(post.getCreatedAt())
                 .build();
 
-        return postDto;
+        post.updateViewCount(postResponseDto.getViewCount() + 1L);
+
+        return postResponseDto;
     }
 
     /**

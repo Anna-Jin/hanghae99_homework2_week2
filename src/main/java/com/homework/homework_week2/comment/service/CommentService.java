@@ -21,7 +21,13 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
-
+    /**
+     * 댓글 등록
+     * @param userDetails
+     * @param postId
+     * @param commentRequestDto
+     * @return
+     */
     public boolean addComment(User userDetails, Long postId, CommentRequestDto commentRequestDto) {
         User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
@@ -37,6 +43,12 @@ public class CommentService {
         return true;
     }
 
+    /**
+     * 댓글 수정
+     * @param commentId
+     * @param commentRequestDto
+     * @return
+     */
     @Transactional
     public boolean updateComment(Long commentId, CommentRequestDto commentRequestDto) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
