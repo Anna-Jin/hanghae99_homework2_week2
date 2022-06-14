@@ -3,6 +3,7 @@ package com.homework.homework_week2.post.service;
 import com.homework.homework_week2.comment.dto.CommentResponseDto;
 import com.homework.homework_week2.common.FileManagerService;
 import com.homework.homework_week2.exception.errorCode.CustomErrorCode;
+import com.homework.homework_week2.likes.repository.LikesRepository;
 import com.homework.homework_week2.post.domain.Post;
 import com.homework.homework_week2.post.dto.PostResponseDto;
 import com.homework.homework_week2.post.dto.PostRequestDto;
@@ -19,13 +20,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PostService {
 
     private final FileManagerService fileManagerService;
-
     private final PostRepository postRepository;
-
     private final UserRepository userRepository;
+    private final LikesRepository likesRepository;
+
 
     /**
      * 게시물 생성
@@ -54,7 +56,8 @@ public class PostService {
      * 게시물 목록 조회
      * @return
      */
-    public List<PostResponseDto> getPosts() {
+    public List<PostResponseDto> getPosts(User userDetails) {
+        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         List<Post> foundPosts = postRepository.findAll();
 
         List<PostResponseDto> posts = new ArrayList<>();
@@ -70,6 +73,8 @@ public class PostService {
                             .map(CommentResponseDto::new)
                             .collect(Collectors.toList()))
                     .viewCount(post.getViewCount())
+                    .isLike(likesRepository.countLikesByUserAndPost(user, post))
+                    .likeCount(likesRepository.countLikesByPost(post))
                     .createdAt(post.getCreatedAt())
                     .build();
 
@@ -84,10 +89,11 @@ public class PostService {
      * @param postId
      * @return
      */
-    @Transactional
-    public PostResponseDto getPost(Long postId) {
+    public PostResponseDto getPost(User userDetails, Long postId) {
+        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
 
+        // view count 올리기
         post.updateViewCount(post.getViewCount() + 1L);
 
         // entity -> dto
@@ -100,6 +106,8 @@ public class PostService {
                         .map(CommentResponseDto::new)
                         .collect(Collectors.toList()))
                 .viewCount(post.getViewCount())
+                .isLike(likesRepository.countLikesByUserAndPost(user, post))
+                .likeCount(likesRepository.countLikesByPost(post))
                 .createdAt(post.getCreatedAt())
                 .build();
 
@@ -113,7 +121,6 @@ public class PostService {
      * @param userDetails
      * @return
      */
-    @Transactional
     public boolean updatePost(Long postId, PostRequestDto postRequestDto, User userDetails) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
 
@@ -137,7 +144,12 @@ public class PostService {
         return true;
     }
 
-
+    /**
+     * 게시글 삭제
+     * @param userDetails
+     * @param postId
+     * @return
+     */
     @Transactional
     public boolean deletePost(User userDetails, Long postId) {
         // 게시글 이미지 삭제
