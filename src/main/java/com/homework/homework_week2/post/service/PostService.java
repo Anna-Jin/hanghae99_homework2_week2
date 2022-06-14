@@ -62,6 +62,7 @@ public class PostService {
                     .title(post.getTitle())
                     .content(post.getContent())
                     .imageUrl(post.getImageUrl())
+                    .comments(post.getComments())
                     .createdAt(post.getCreatedAt())
                     .build();
 
@@ -85,6 +86,7 @@ public class PostService {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .imageUrl(post.getImageUrl())
+                .comments(post.getComments())
                 .createdAt(post.getCreatedAt())
                 .build();
 

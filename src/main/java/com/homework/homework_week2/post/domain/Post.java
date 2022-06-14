@@ -41,8 +41,6 @@ public class Post extends Timestamped {
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-
-
     @OrderBy(value = "createdAt DESC")
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Comment> comments;
