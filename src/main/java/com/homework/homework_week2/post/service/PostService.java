@@ -25,12 +25,12 @@ public class PostService {
 
     /**
      * 게시물 생성
-     * @param id
+     * @param userDetails
      * @param postRequestDto
      * @return
      */
-    public boolean addPost(Long id, PostRequestDto postRequestDto) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
+    public boolean addPost(User userDetails, PostRequestDto postRequestDto) {
+        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
 
         Post post = Post.builder()
                 .title(postRequestDto.getTitle())
@@ -45,7 +45,6 @@ public class PostService {
 
         return true;
     }
-
 
     /**
      * 게시물 목록 조회
@@ -67,6 +66,20 @@ public class PostService {
         }
 
         return posts;
+    }
+
+    public PostDto getPost(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
+
+        // entity -> dto
+        PostDto postDto = PostDto.builder()
+                .title(post.getTitle())
+                .content(post.getContent())
+                .imageUrl(post.getImageUrl())
+                .createdAt(post.getCreatedAt())
+                .build();
+
+        return postDto;
     }
 
 }
