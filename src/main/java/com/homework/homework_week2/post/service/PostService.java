@@ -1,6 +1,8 @@
 package com.homework.homework_week2.post.service;
 
 import com.homework.homework_week2.common.FileManagerService;
+import com.homework.homework_week2.exception.errorCode.UserErrorCode;
+import com.homework.homework_week2.exception.exception.RestApiException;
 import com.homework.homework_week2.post.domain.Post;
 import com.homework.homework_week2.post.dto.PostDto;
 import com.homework.homework_week2.post.dto.PostRequestDto;
@@ -57,6 +59,7 @@ public class PostService {
         List<PostDto> posts = new ArrayList<>();
         for (Post post : foundPosts) {
             PostDto postDto = PostDto.builder()
+                    .postId(post.getId())
                     .title(post.getTitle())
                     .content(post.getContent())
                     .imageUrl(post.getImageUrl())
@@ -79,6 +82,7 @@ public class PostService {
 
         // entity -> dto
         PostDto postDto = PostDto.builder()
+                .postId(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .imageUrl(post.getImageUrl())
@@ -103,7 +107,9 @@ public class PostService {
         String imageUrl = post.getImageUrl();
 
         String imagePath = null;
-        if (postRequestDto.getFile().getOriginalFilename() != "") {
+        if (postRequestDto.getFile().getOriginalFilename().isBlank()) {
+            throw new RuntimeException(UserErrorCode.NULL_FILE.getMessage());
+        } else {
             imagePath = fileManagerService.savaFile(userDetails.getEmail(), postRequestDto.getFile());
 
             if (imageUrl != null && imagePath != null) {
@@ -118,6 +124,7 @@ public class PostService {
     }
 
 
+    @Transactional
     public boolean deletePost(User userDetails, Long postId) {
         // 게시글 이미지 삭제
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
@@ -129,7 +136,7 @@ public class PostService {
 
         // 글 삭제
         User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당하는 사용자가 존재하지 않습니다."));
-
-        return postRepository.deletePostByUserAndId(user, postId);
+        postRepository.deletePostByUserAndId(user, postId);
+        return true;
     }
 }
