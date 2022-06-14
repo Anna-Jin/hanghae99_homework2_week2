@@ -1,8 +1,7 @@
 package com.homework.homework_week2.post.service;
 
 import com.homework.homework_week2.common.FileManagerService;
-import com.homework.homework_week2.exception.errorCode.UserErrorCode;
-import com.homework.homework_week2.exception.exception.RestApiException;
+import com.homework.homework_week2.exception.errorCode.CustomErrorCode;
 import com.homework.homework_week2.post.domain.Post;
 import com.homework.homework_week2.post.dto.PostDto;
 import com.homework.homework_week2.post.dto.PostRequestDto;
@@ -108,7 +107,7 @@ public class PostService {
 
         String imagePath = null;
         if (postRequestDto.getFile().getOriginalFilename().isBlank()) {
-            throw new RuntimeException(UserErrorCode.NULL_FILE.getMessage());
+            throw new RuntimeException(CustomErrorCode.NULL_FILE.getMessage());
         } else {
             imagePath = fileManagerService.savaFile(userDetails.getEmail(), postRequestDto.getFile());
 
