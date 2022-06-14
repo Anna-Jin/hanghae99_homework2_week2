@@ -1,5 +1,7 @@
 package com.homework.homework_week2.comment.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.homework.homework_week2.post.domain.Post;
 import com.homework.homework_week2.timestamp.Timestamped;
 import com.homework.homework_week2.user.domain.User;

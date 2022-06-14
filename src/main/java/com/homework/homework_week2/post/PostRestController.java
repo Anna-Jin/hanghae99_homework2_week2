@@ -1,5 +1,6 @@
 package com.homework.homework_week2.post;
 
+import com.homework.homework_week2.post.domain.Post;
 import com.homework.homework_week2.post.dto.PostDto;
 import com.homework.homework_week2.post.dto.PostRequestDto;
 import com.homework.homework_week2.post.service.PostService;
@@ -52,7 +53,9 @@ public class PostRestController {
     public PostDto getPost(
             @PathVariable(value = "postId", required = false) Long postId
     ) {
-        return postService.getPost(postId);
+        PostDto post = postService.getPost(postId);
+
+        return post;
     }
 
     /**

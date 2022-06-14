@@ -1,5 +1,7 @@
 package com.homework.homework_week2.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.homework.homework_week2.comment.domain.Comment;
 import com.homework.homework_week2.post.domain.Post;
 import com.homework.homework_week2.timestamp.Timestamped;
@@ -7,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Proxy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +24,7 @@ import java.util.stream.Collectors;
 @Getter
 @NoArgsConstructor
 @Builder @AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User extends Timestamped implements UserDetails {
 
     @Id
@@ -52,8 +56,6 @@ public class User extends Timestamped implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
-
-    // 이거 존재 이유 알아내기
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
