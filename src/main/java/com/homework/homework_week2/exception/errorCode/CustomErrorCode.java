@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum CustomErrorCode implements ErrorCode {
 
-    INACTIVE_USER(HttpStatus.FORBIDDEN, "User is inactive"),
+    INACTIVE_USER(HttpStatus.FORBIDDEN, "로그인이 필요합니다"),
     NULL_FILE(HttpStatus.INTERNAL_SERVER_ERROR, "file is required")
     ;
 

@@ -26,12 +26,9 @@ public class PostRestController {
     @PostMapping("/posts")
     public boolean addPost(
             @AuthenticationPrincipal User userDetails,
-            @ModelAttribute PostRequestDto postRequestDto
+            @RequestBody PostRequestDto postRequestDto
             ) {
-
-        boolean result = postService.addPost(userDetails, postRequestDto);
-
-        return result;
+        return postService.addPost(userDetails, postRequestDto);
     }
 
     /**
@@ -60,16 +57,14 @@ public class PostRestController {
      * 게시물 수정
      * @param postId
      * @param postRequestDto
-     * @param userDetails
      * @return
      */
     @PutMapping("/posts/{postId}")
     public boolean updatePost(
             @PathVariable(value = "postId", required = false) Long postId,
-            @ModelAttribute PostRequestDto postRequestDto,
-            @AuthenticationPrincipal User userDetails
+            @ModelAttribute PostRequestDto postRequestDto
     ) {
-        postService.updatePost(postId, postRequestDto, userDetails);
+        postService.updatePost(postId, postRequestDto);
         return true;
     }
 
