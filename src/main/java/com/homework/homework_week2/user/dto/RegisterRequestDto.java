@@ -30,4 +30,6 @@ public class RegisterRequestDto {
     }
 
     private String introduce = "자기소개를 입력해주세요";
+
+    private MultipartFile file;
 }
