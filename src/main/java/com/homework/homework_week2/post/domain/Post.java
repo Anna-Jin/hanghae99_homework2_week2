@@ -28,24 +28,26 @@ public class Post extends Timestamped {
     @Column(nullable = false, columnDefinition = "text")
     private String content;
 
-    @Column(nullable = false, name = "image_url")
+    @Column(name = "image_url")
     private String imageUrl;
 
     @Column(name = "view_count")
     private Long viewCount;
 
+    @Column(name = "likes_count")
+    private Long likesCount;
 
     // 연관관계 매핑
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
     @OrderBy(value = "createdAt DESC")
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
     @Builder
-    public Post(String title, String content, String imageUrl, Long viewCount, User user) {
+    public Post(String title, String content, String imageUrl, User user) {
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
@@ -53,13 +55,16 @@ public class Post extends Timestamped {
         this.user = user;
     }
 
-    public void update(String title, String content, String imageUrl) {
+    public void update(String title, String content) {
         this.title = title;
         this.content = content;
-        this.imageUrl = imageUrl;
     }
 
     public void updateViewCount(Long viewCount) {
         this.viewCount = viewCount;
+    }
+
+    public void updateLikesCount(Long likesCount) {
+        this.likesCount = likesCount;
     }
 }

@@ -26,12 +26,9 @@ public class PostRestController {
     @PostMapping("/posts")
     public boolean addPost(
             @AuthenticationPrincipal User userDetails,
-            @ModelAttribute PostRequestDto postRequestDto
+            @RequestBody PostRequestDto postRequestDto
             ) {
-
-        boolean result = postService.addPost(userDetails, postRequestDto);
-
-        return result;
+        return postService.addPost(userDetails, postRequestDto);
     }
 
     /**
@@ -39,8 +36,8 @@ public class PostRestController {
      * @return
      */
     @GetMapping("/posts")
-    public List<PostResponseDto> getPosts() {
-        return postService.getPosts();
+    public List<PostResponseDto> getPosts(@AuthenticationPrincipal User userDetails) {
+        return postService.getPosts(userDetails);
     }
 
     /**
@@ -50,25 +47,24 @@ public class PostRestController {
      */
     @GetMapping("/posts/{postId}")
     public PostResponseDto getPost(
+            @AuthenticationPrincipal User userDetails,
             @PathVariable(value = "postId", required = false) Long postId
     ) {
-        return postService.getPost(postId);
+        return postService.getPost(userDetails, postId);
     }
 
     /**
      * 게시물 수정
      * @param postId
      * @param postRequestDto
-     * @param userDetails
      * @return
      */
     @PutMapping("/posts/{postId}")
     public boolean updatePost(
             @PathVariable(value = "postId", required = false) Long postId,
-            @ModelAttribute PostRequestDto postRequestDto,
-            @AuthenticationPrincipal User userDetails
+            @ModelAttribute PostRequestDto postRequestDto
     ) {
-        postService.updatePost(postId, postRequestDto, userDetails);
+        postService.updatePost(postId, postRequestDto);
         return true;
     }
 
