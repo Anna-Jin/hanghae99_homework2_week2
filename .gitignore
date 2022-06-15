@@ -36,3 +36,4 @@ out/
 ### VS Code ###
 .vscode/
 JwtSecretKey.java
+application-aws.yml
