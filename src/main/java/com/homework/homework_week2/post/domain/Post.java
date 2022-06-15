@@ -34,14 +34,16 @@ public class Post extends Timestamped {
     @Column(name = "view_count")
     private Long viewCount;
 
+    @Column(name = "likes_count")
+    private Long likesCount;
 
     // 연관관계 매핑
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
     @OrderBy(value = "createdAt DESC")
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
     @Builder
@@ -61,5 +63,9 @@ public class Post extends Timestamped {
 
     public void updateViewCount(Long viewCount) {
         this.viewCount = viewCount;
+    }
+
+    public void updateLikesCount(Long likesCount) {
+        this.likesCount = likesCount;
     }
 }

@@ -39,8 +39,8 @@ public class PostRestController {
      * @return
      */
     @GetMapping("/posts")
-    public List<PostResponseDto> getPosts() {
-        return postService.getPosts();
+    public List<PostResponseDto> getPosts(@AuthenticationPrincipal User userDetails) {
+        return postService.getPosts(userDetails);
     }
 
     /**
@@ -50,9 +50,10 @@ public class PostRestController {
      */
     @GetMapping("/posts/{postId}")
     public PostResponseDto getPost(
+            @AuthenticationPrincipal User userDetails,
             @PathVariable(value = "postId", required = false) Long postId
     ) {
-        return postService.getPost(postId);
+        return postService.getPost(userDetails, postId);
     }
 
     /**
