@@ -1,8 +1,6 @@
 package com.homework.homework_week2.post.service;
 
 import com.homework.homework_week2.comment.dto.CommentResponseDto;
-import com.homework.homework_week2.common.FileManagerService;
-import com.homework.homework_week2.exception.errorCode.CustomErrorCode;
 import com.homework.homework_week2.likes.repository.LikesRepository;
 import com.homework.homework_week2.post.domain.Post;
 import com.homework.homework_week2.post.dto.PostResponseDto;
@@ -23,7 +21,6 @@ import java.util.stream.Collectors;
 @Transactional
 public class PostService {
 
-    private final FileManagerService fileManagerService;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final LikesRepository likesRepository;
@@ -41,9 +38,6 @@ public class PostService {
         Post post = Post.builder()
                 .title(postRequestDto.getTitle())
                 .content(postRequestDto.getContent())
-                .imageUrl(
-                        fileManagerService.savaFile(user.getEmail(), postRequestDto.getFile())
-                )
                 .user(user)
                 .build();
 
@@ -93,37 +87,20 @@ public class PostService {
         post.updateLikesCount(likesCount);
 
         // entity -> dto
-        PostResponseDto postResponseDto = mapEntityToDto(user, post, likesCount);
-
-        return postResponseDto;
+        return mapEntityToDto(user, post, likesCount);
     }
 
     /**
      * 게시물 수정
      * @param postId
      * @param postRequestDto
-     * @param userDetails
      * @return
      */
-    public boolean updatePost(Long postId, PostRequestDto postRequestDto, User userDetails) {
+    public boolean updatePost(Long postId, PostRequestDto postRequestDto) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
 
-        // 게시글 이미지 수정
-        String imageUrl = post.getImageUrl();
-
-        String imagePath = null;
-        if (postRequestDto.getFile().getOriginalFilename().isBlank()) {
-            throw new RuntimeException(CustomErrorCode.NULL_FILE.getMessage());
-        } else {
-            imagePath = fileManagerService.savaFile(userDetails.getEmail(), postRequestDto.getFile());
-
-            if (imageUrl != null && imagePath != null) {
-                fileManagerService.deleteFile(imageUrl);
-            }
-        }
-
         // 게시글 수정
-        post.update(postRequestDto.getTitle(), postRequestDto.getContent(), imagePath);
+        post.update(postRequestDto.getTitle(), postRequestDto.getContent());
 
         return true;
     }
@@ -136,14 +113,6 @@ public class PostService {
      */
     @Transactional
     public boolean deletePost(User userDetails, Long postId) {
-        // 게시글 이미지 삭제
-        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
-
-        String imagePath = post.getImageUrl();
-        if (imagePath != null) {
-            fileManagerService.deleteFile(imagePath);
-        }
-
         // 글 삭제
         User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당하는 사용자가 존재하지 않습니다."));
         postRepository.deletePostByUserAndId(user, postId);
