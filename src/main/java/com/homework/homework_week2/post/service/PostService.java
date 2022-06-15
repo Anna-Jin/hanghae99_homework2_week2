@@ -1,10 +1,11 @@
 package com.homework.homework_week2.post.service;
 
 import com.homework.homework_week2.comment.dto.CommentResponseDto;
+import com.homework.homework_week2.common.S3UploadManager;
 import com.homework.homework_week2.likes.repository.LikesRepository;
 import com.homework.homework_week2.post.domain.Post;
-import com.homework.homework_week2.post.dto.PostResponseDto;
 import com.homework.homework_week2.post.dto.PostRequestDto;
+import com.homework.homework_week2.post.dto.PostResponseDto;
 import com.homework.homework_week2.post.repository.PostRepository;
 import com.homework.homework_week2.user.domain.User;
 import com.homework.homework_week2.user.repository.UserRepository;
@@ -24,6 +25,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final LikesRepository likesRepository;
+    private final S3UploadManager s3UploadManager;
 
 
     /**
@@ -39,6 +41,7 @@ public class PostService {
                 .title(postRequestDto.getTitle())
                 .content(postRequestDto.getContent())
                 .user(user)
+                .imageUrl(s3UploadManager.uploadFile(postRequestDto.getFile()))
                 .build();
 
         postRepository.save(post);
@@ -100,7 +103,12 @@ public class PostService {
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
 
         // 게시글 수정
-        post.update(postRequestDto.getTitle(), postRequestDto.getContent());
+        // 기존에 있던 이미지를 삭제하고 새롭게 추가해야함
+        s3UploadManager.deleteFile(post.getImageUrl());
+
+        post.update(postRequestDto.getTitle(),
+                postRequestDto.getContent(),
+                s3UploadManager.uploadFile(postRequestDto.getFile()));
 
         return true;
     }
@@ -115,6 +123,12 @@ public class PostService {
     public boolean deletePost(User userDetails, Long postId) {
         // 글 삭제
         User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당하는 사용자가 존재하지 않습니다."));
+
+        // 게시물 삭제 전에 s3에 있는 이미지부터 삭제해야함
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
+        s3UploadManager.deleteFile(post.getImageUrl());
+
+        // 게시물 삭제
         postRepository.deletePostByUserAndId(user, postId);
         return true;
     }

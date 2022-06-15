@@ -28,7 +28,7 @@ public class Post extends Timestamped {
     @Column(nullable = false, columnDefinition = "text")
     private String content;
 
-    @Column(name = "image_url")
+    @Column(nullable = false, name = "image_url")
     private String imageUrl;
 
     @Column(name = "view_count")
@@ -55,9 +55,10 @@ public class Post extends Timestamped {
         this.user = user;
     }
 
-    public void update(String title, String content) {
+    public void update(String title, String content, String imageUrl) {
         this.title = title;
         this.content = content;
+        this.imageUrl = imageUrl;
     }
 
     public void updateViewCount(Long viewCount) {
