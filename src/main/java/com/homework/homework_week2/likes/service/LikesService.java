@@ -9,6 +9,8 @@ import com.homework.homework_week2.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class LikesService {
@@ -27,8 +29,8 @@ public class LikesService {
         User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
 
-        boolean isLikesExist = likesRepository.countLikesByUserAndPost(user, post);
-        if (isLikesExist) {
+        boolean isLikesExist = likesRepository.existsLikesByUserAndPost(user, post);
+        if (!isLikesExist) {
             likesRepository.save(new Likes(user, post));
         }
 
@@ -41,12 +43,13 @@ public class LikesService {
      * @param postId
      * @return
      */
+    @Transactional
     public boolean deletelikes(User userDetails, Long postId) {
         User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
 
-        boolean isLikesExist = likesRepository.countLikesByUserAndPost(user, post);
-        if (!isLikesExist) {
+        boolean isLikesExist = likesRepository.existsLikesByUserAndPost(user, post);
+        if (isLikesExist) {
             likesRepository.deleteByUserAndPost(user, post);
         }
 

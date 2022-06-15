@@ -58,25 +58,17 @@ public class PostService {
      */
     public List<PostResponseDto> getPosts(User userDetails) {
         User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
-        List<Post> foundPosts = postRepository.findAll();
+        List<Post> foundPosts = postRepository.findAllByOrderByLikesCountDesc();
 
         List<PostResponseDto> posts = new ArrayList<>();
 
         // entity -> dto
         for (Post post : foundPosts) {
-            PostResponseDto postResponseDto = PostResponseDto.builder()
-                    .postId(post.getId())
-                    .title(post.getTitle())
-                    .content(post.getContent())
-                    .imageUrl(post.getImageUrl())
-                    .comments(post.getComments().stream()
-                            .map(CommentResponseDto::new)
-                            .collect(Collectors.toList()))
-                    .viewCount(post.getViewCount())
-                    .isLike(likesRepository.countLikesByUserAndPost(user, post))
-                    .likeCount(likesRepository.countLikesByPost(post))
-                    .createdAt(post.getCreatedAt())
-                    .build();
+            // 좋아요 개수 업데이트
+            Long likesCount = likesRepository.countLikesByPost(post);
+            post.updateLikesCount(likesCount);
+
+            PostResponseDto postResponseDto = mapEntityToDto(user, post, likesCount);
 
             posts.add(postResponseDto);
         }
@@ -96,20 +88,12 @@ public class PostService {
         // view count 올리기
         post.updateViewCount(post.getViewCount() + 1L);
 
+        // 좋아요 개수 업데이트
+        Long likesCount = likesRepository.countLikesByPost(post);
+        post.updateLikesCount(likesCount);
+
         // entity -> dto
-        PostResponseDto postResponseDto = PostResponseDto.builder()
-                .postId(post.getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .imageUrl(post.getImageUrl())
-                .comments(post.getComments().stream()
-                        .map(CommentResponseDto::new)
-                        .collect(Collectors.toList()))
-                .viewCount(post.getViewCount())
-                .isLike(likesRepository.countLikesByUserAndPost(user, post))
-                .likeCount(likesRepository.countLikesByPost(post))
-                .createdAt(post.getCreatedAt())
-                .build();
+        PostResponseDto postResponseDto = mapEntityToDto(user, post, likesCount);
 
         return postResponseDto;
     }
@@ -164,5 +148,26 @@ public class PostService {
         User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당하는 사용자가 존재하지 않습니다."));
         postRepository.deletePostByUserAndId(user, postId);
         return true;
+    }
+
+
+    public PostResponseDto mapEntityToDto(User user, Post post, Long likesCount) {
+
+        // entity -> dto
+        PostResponseDto postResponseDto = PostResponseDto.builder()
+                .postId(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .imageUrl(post.getImageUrl())
+                .comments(post.getComments().stream()
+                        .map(CommentResponseDto::new)
+                        .collect(Collectors.toList()))
+                .viewCount(post.getViewCount())
+                .isLike(likesRepository.existsLikesByUserAndPost(user, post))
+                .likesCount(likesCount)
+                .createdAt(post.getCreatedAt())
+                .build();
+
+        return postResponseDto;
     }
 }

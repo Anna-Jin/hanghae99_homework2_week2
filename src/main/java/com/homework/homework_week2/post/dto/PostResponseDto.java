@@ -18,6 +18,6 @@ public class PostResponseDto {
     private List<CommentResponseDto> comments;
     private String createdAt;
     private boolean isLike;
-    private Long likeCount;
+    private Long likesCount;
 
 }

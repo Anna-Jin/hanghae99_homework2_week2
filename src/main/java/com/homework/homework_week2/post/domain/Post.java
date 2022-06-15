@@ -34,6 +34,8 @@ public class Post extends Timestamped {
     @Column(name = "view_count")
     private Long viewCount;
 
+    @Column(name = "likes_count")
+    private Long likesCount;
 
     // 연관관계 매핑
     @ManyToOne
@@ -61,5 +63,9 @@ public class Post extends Timestamped {
 
     public void updateViewCount(Long viewCount) {
         this.viewCount = viewCount;
+    }
+
+    public void updateLikesCount(Long likesCount) {
+        this.likesCount = likesCount;
     }
 }

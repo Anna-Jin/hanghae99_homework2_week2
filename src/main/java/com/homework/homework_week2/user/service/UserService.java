@@ -60,10 +60,10 @@ public class UserService {
      * @return
      */
     public String login(String email, String password) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("이메일을 확인해주세요."));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+            throw new IllegalArgumentException("패스워드를 확인해주세요.");
         }
 
         return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
