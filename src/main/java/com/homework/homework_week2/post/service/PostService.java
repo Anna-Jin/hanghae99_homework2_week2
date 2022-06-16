@@ -56,7 +56,7 @@ public class PostService {
      */
     public List<PostResponseDto> getPosts(User userDetails) {
         User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
-        List<Post> foundPosts = postRepository.findAllByOrderByLikesCountDesc();
+        List<Post> foundPosts = postRepository.findAllByOrderByLikeCountDesc();
 
         List<PostResponseDto> posts = new ArrayList<>();
 
@@ -148,8 +148,8 @@ public class PostService {
                         .map(CommentResponseDto::new)
                         .collect(Collectors.toList()))
                 .viewCount(post.getViewCount())
-                .isLike(likesRepository.existsLikesByUserAndPost(user, post))
-                .likesCount(likesCount)
+                .likeByMe(likesRepository.existsLikesByUserAndPost(user, post))
+                .likeCount(likesCount)
                 .createdAt(post.getCreatedAt())
                 .build();
 

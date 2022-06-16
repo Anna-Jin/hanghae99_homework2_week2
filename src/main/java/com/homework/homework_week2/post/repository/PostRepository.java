@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findAllByOrderByLikesCountDesc();
+    List<Post> findAllByOrderByLikeCountDesc();
     void deletePostByUserAndId(User user, Long postId);
 }

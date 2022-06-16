@@ -18,7 +18,7 @@ public class PostResponseDto {
     private Long viewCount;
     private List<CommentResponseDto> comments;
     private String createdAt;
-    private boolean isLike;
-    private Long likesCount;
+    private boolean likeByMe;
+    private Long likeCount;
 
 }

@@ -34,8 +34,8 @@ public class Post extends Timestamped {
     @Column(name = "view_count")
     private Long viewCount;
 
-    @Column(name = "likes_count")
-    private Long likesCount;
+    @Column(name = "like_count")
+    private Long likeCount;
 
     @Column
     private String template;
@@ -68,7 +68,7 @@ public class Post extends Timestamped {
         this.viewCount = viewCount;
     }
 
-    public void updateLikesCount(Long likesCount) {
-        this.likesCount = likesCount;
+    public void updateLikesCount(Long likeCount) {
+        this.likeCount = likeCount;
     }
 }
