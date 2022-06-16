@@ -1,7 +1,6 @@
 package com.homework.homework_week2.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.homework.homework_week2.comment.domain.Comment;
 import com.homework.homework_week2.post.domain.Post;
@@ -10,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Proxy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,9 +44,6 @@ public class User extends Timestamped implements UserDetails {
 
     @Column(nullable = false, columnDefinition = "text")
     private String introduce;
-
-    @Column(name = "profile_image_url")
-    private String profileImageUrl;
 
     // 연관관계 매핑
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
