@@ -24,6 +24,10 @@ public class LikesRestController {
             @AuthenticationPrincipal User userDetails,
             @PathVariable(required = false) Long postId
     ) {
+        if (userDetails == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
         likesService.addlikes(userDetails, postId);
         return true;
     }
