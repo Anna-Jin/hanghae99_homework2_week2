@@ -5,6 +5,7 @@ import com.homework.homework_week2.post.dto.PostRequestDto;
 import com.homework.homework_week2.post.service.PostService;
 import com.homework.homework_week2.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,11 +25,12 @@ public class PostRestController {
      * @param postRequestDto
      * @return
      */
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/posts")
     public boolean addPost(
             @AuthenticationPrincipal User userDetails,
             @ModelAttribute PostRequestDto postRequestDto
-            ) throws IOException {
+            ) {
         return postService.addPost(userDetails, postRequestDto);
     }
 
@@ -38,6 +40,10 @@ public class PostRestController {
      */
     @GetMapping("/posts")
     public List<PostResponseDto> getPosts(@AuthenticationPrincipal User userDetails) {
+        if (userDetails == null) {
+            throw new IllegalArgumentException("이거 아니야");
+        }
+
         return postService.getPosts(userDetails);
     }
 
@@ -46,6 +52,7 @@ public class PostRestController {
      * @param postId
      * @return
      */
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/posts/{postId}")
     public PostResponseDto getPost(
             @AuthenticationPrincipal User userDetails,
@@ -60,6 +67,7 @@ public class PostRestController {
      * @param postRequestDto
      * @return
      */
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("/posts/{postId}")
     public boolean updatePost(
             @PathVariable(value = "postId", required = false) Long postId,
@@ -75,6 +83,7 @@ public class PostRestController {
      * @param postId
      * @return
      */
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/posts/{postId}")
     public boolean deletePost(
             @AuthenticationPrincipal User userDetails,

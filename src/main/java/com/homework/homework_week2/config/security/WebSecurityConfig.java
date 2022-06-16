@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,6 +20,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -46,7 +48,7 @@ public class WebSecurityConfig {
                 .and()
                 .authorizeRequests() // 요청에 대한 사용권한 체크
                  // 그외 나머지 요청은 누구나 접근 가능
-                .antMatchers("/api/user/**", "/api/posts/**", "/api/comment/**").hasRole("USER")
+                .antMatchers("/api/user/**", "/api/comment/**").hasRole("USER")
                 .anyRequest()
                 .permitAll()
                 .and()
