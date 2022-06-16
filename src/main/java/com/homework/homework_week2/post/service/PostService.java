@@ -51,10 +51,10 @@ public class PostService {
     }
 
     /**
-     * 게시물 목록 조회
+     * 게시물 목록 조회 By user
      * @return
      */
-    public List<PostResponseDto> getPosts(User userDetails) {
+    public List<PostResponseDto> getPostsByUser(User userDetails) {
         User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         List<Post> foundPosts = postRepository.findAllByOrderByLikeCountDesc();
 
@@ -67,6 +67,38 @@ public class PostService {
             post.updateLikesCount(likesCount);
 
             PostResponseDto postResponseDto = mapEntityToDto(user, post, likesCount);
+
+            posts.add(postResponseDto);
+        }
+
+        return posts;
+    }
+
+    public List<PostResponseDto> getPosts() {
+        List<Post> foundPosts = postRepository.findAllByOrderByLikeCountDesc();
+
+        List<PostResponseDto> posts = new ArrayList<>();
+
+        // entity -> dto
+        for (Post post : foundPosts) {
+            // 좋아요 개수 업데이트
+            Long likesCount = likesRepository.countLikesByPost(post);
+            post.updateLikesCount(likesCount);
+
+            // entity -> dto without likeByMe
+            PostResponseDto postResponseDto = PostResponseDto.builder()
+                    .postId(post.getId())
+                    .title(post.getTitle())
+                    .content(post.getContent())
+                    .template(post.getTemplate())
+                    .imageUrl(post.getImageUrl())
+                    .comments(post.getComments().stream()
+                            .map(CommentResponseDto::new)
+                            .collect(Collectors.toList()))
+                    .viewCount(post.getViewCount())
+                    .likeCount(likesCount)
+                    .createdAt(post.getCreatedAt())
+                    .build();
 
             posts.add(postResponseDto);
         }

@@ -41,10 +41,10 @@ public class PostRestController {
     @GetMapping("/posts")
     public List<PostResponseDto> getPosts(@AuthenticationPrincipal User userDetails) {
         if (userDetails == null) {
-            throw new IllegalArgumentException("이거 아니야");
+            return postService.getPosts();
         }
 
-        return postService.getPosts(userDetails);
+        return postService.getPostsByUser(userDetails);
     }
 
     /**
