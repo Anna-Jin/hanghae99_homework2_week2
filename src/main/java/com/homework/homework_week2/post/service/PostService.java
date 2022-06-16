@@ -74,6 +74,10 @@ public class PostService {
         return posts;
     }
 
+    /**
+     * 게시물 목록 조회 without user
+     * @return
+     */
     public List<PostResponseDto> getPosts() {
         List<Post> foundPosts = postRepository.findAllByOrderByLikeCountDesc();
 
