@@ -40,8 +40,9 @@ public class PostService {
         Post post = Post.builder()
                 .title(postRequestDto.getTitle())
                 .content(postRequestDto.getContent())
-                .user(user)
+                .template(postRequestDto.getTemplate())
                 .imageUrl(s3UploadManager.uploadFile(postRequestDto.getFile()))
+                .user(user)
                 .build();
 
         postRepository.save(post);
@@ -141,6 +142,7 @@ public class PostService {
                 .postId(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
+                .template(post.getTemplate())
                 .imageUrl(post.getImageUrl())
                 .comments(post.getComments().stream()
                         .map(CommentResponseDto::new)
