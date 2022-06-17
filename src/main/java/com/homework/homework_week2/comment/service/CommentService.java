@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CommentService {
 
     private final UserRepository userRepository;
@@ -50,8 +51,8 @@ public class CommentService {
      * @return
      */
     @Transactional
-    public boolean updateComment(Long commentId, CommentRequestDto commentRequestDto) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
+    public boolean updateComment(User userDetails, Long commentId, CommentRequestDto commentRequestDto) {
+        Comment comment = commentRepository.findCommentByUserAndId(userDetails, commentId);
 
         comment.update(commentRequestDto.getContent());
 
@@ -63,8 +64,8 @@ public class CommentService {
      * @param commentId
      * @return
      */
-    public boolean deleteComment(Long commentId) {
-        commentRepository.deleteById(commentId);
+    public boolean deleteComment(User userDetails, Long commentId) {
+        commentRepository.deleteCommentByUserAndId(userDetails, commentId);
         return true;
     }
 }

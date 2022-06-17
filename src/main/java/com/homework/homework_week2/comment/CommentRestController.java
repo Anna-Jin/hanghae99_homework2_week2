@@ -2,6 +2,7 @@ package com.homework.homework_week2.comment;
 
 import com.homework.homework_week2.comment.service.CommentService;
 import com.homework.homework_week2.comment.dto.CommentRequestDto;
+import com.homework.homework_week2.exception.errorCode.CustomErrorCode;
 import com.homework.homework_week2.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -38,18 +39,33 @@ public class CommentRestController {
      */
     @PutMapping("/comments/{commentId}")
     public boolean updateComment(
+            @AuthenticationPrincipal User userDetails,
             @PathVariable(required = false) Long commentId,
             @RequestBody CommentRequestDto commentRequestDto
     ) {
-        commentService.updateComment(commentId, commentRequestDto);
+        if (userDetails == null) {
+            throw new IllegalArgumentException(CustomErrorCode.ERROR_LOGIN_NECESSARY.getMessage());
+        }
+
+        commentService.updateComment(userDetails, commentId, commentRequestDto);
         return true;
     }
 
-    @DeleteMapping("/comment/{commentId}")
+    /**
+     * 댓글 삭제
+     * @param commentId
+     * @return
+     */
+    @DeleteMapping("/comments/{commentId}")
     public boolean deleteComment(
+            @AuthenticationPrincipal User userDetails,
             @PathVariable(required = false) Long commentId
     ) {
-        commentService.deleteComment(commentId);
+        if (userDetails == null) {
+            throw new IllegalArgumentException(CustomErrorCode.ERROR_LOGIN_NECESSARY.getMessage());
+        }
+
+        commentService.deleteComment(userDetails, commentId);
         return true;
     }
 }
