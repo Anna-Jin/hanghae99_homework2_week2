@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum CustomErrorCode implements ErrorCode {
 
     ERROR_USER_NOT_EXISTS(HttpStatus.FORBIDDEN, "로그인이 필요합니다"),
+    ERROR_LOGIN_NECESSARY(HttpStatus.FORBIDDEN, "이미 로그인이 되어있습니다."),
     NULL_FILE(HttpStatus.BAD_REQUEST, "파일을 업로드해주세요")
     ;
 

@@ -39,7 +39,7 @@ public class User extends Timestamped implements UserDetails {
     @Column(nullable = false, unique = true, length = 50)
     private String email;
 
-    @Column(nullable = false, length = 25)
+    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false, columnDefinition = "text", length = 1000)
