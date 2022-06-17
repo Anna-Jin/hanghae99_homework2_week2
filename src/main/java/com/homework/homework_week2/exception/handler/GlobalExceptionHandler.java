@@ -1,6 +1,7 @@
 package com.homework.homework_week2.exception.handler;
 
 import com.homework.homework_week2.exception.errorCode.CommonErrorCode;
+import com.homework.homework_week2.exception.errorCode.CustomErrorCode;
 import com.homework.homework_week2.exception.errorCode.ErrorCode;
 import com.homework.homework_week2.exception.exception.RestApiException;
 import com.homework.homework_week2.exception.response.ErrorResponse;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -52,6 +54,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             HttpRequestMethodNotSupportedException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.warn("handleHttpRequestMethodNotSupported", e);
         return handleExceptionInternal(CommonErrorCode.INTERNAL_SERVER_ERROR, e.getMessage());
+    }
+
+    // 로그인 관련 에러 처리
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> handleAccessDenied(AccessDeniedException e) {
+        log.warn("AccessDenied", e);
+        return handleExceptionInternal(CustomErrorCode.ERROR_USER_NOT_EXISTS, "로그인이 필요합니다.");
     }
 
     // 대부분의 에러 처리
