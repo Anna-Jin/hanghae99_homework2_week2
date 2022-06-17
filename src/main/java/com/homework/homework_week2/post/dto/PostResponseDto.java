@@ -13,7 +13,7 @@ public class PostResponseDto {
     private Long postId;
     private String title;
     private String content;
-    private String template;
+    private Long template;
     private String imageUrl;
     private Long viewCount;
     private List<CommentResponseDto> comments;

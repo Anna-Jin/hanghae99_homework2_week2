@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 public class PostRequestDto {
     private String title;
     private String content;
-    private String template;
+    private Long template;
 
     @NotNull(message = "이미지를 등록해주세요.")
     private MultipartFile file;

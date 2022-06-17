@@ -38,7 +38,7 @@ public class Post extends Timestamped {
     private Long likeCount;
 
     @Column
-    private String template;
+    private Long template;
 
     // 연관관계 매핑
     @ManyToOne
@@ -50,12 +50,13 @@ public class Post extends Timestamped {
     private List<Comment> comments;
 
     @Builder
-    public Post(String title, String content, String template, String imageUrl, User user) {
+    public Post(String title, String content, Long template, String imageUrl, User user) {
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
         this.viewCount = 0L;
         this.user = user;
+        this.template = template;
     }
 
     public void update(String title, String content, String imageUrl) {
