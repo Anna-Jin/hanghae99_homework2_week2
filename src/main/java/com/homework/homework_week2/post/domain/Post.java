@@ -25,10 +25,10 @@ public class Post extends Timestamped {
     @Column(nullable = false, length = 25)
     private String title;
 
-    @Column(nullable = false, columnDefinition = "text")
+    @Column(nullable = false, length = 3000)
     private String content;
 
-    @Column(nullable = false, name = "image_url")
+    @Column(nullable = false, name = "image_url", length = 512)
     private String imageUrl;
 
     @Column(name = "view_count")

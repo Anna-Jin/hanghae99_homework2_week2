@@ -20,7 +20,7 @@ public class Comment extends Timestamped {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false, columnDefinition = "text")
+    @Column(nullable = false, length = 1000)
     private String content;
 
     // 연관관계 매핑
