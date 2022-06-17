@@ -1,7 +1,7 @@
 package com.homework.homework_week2.post;
 
-import com.homework.homework_week2.post.dto.PostResponseDto;
 import com.homework.homework_week2.post.dto.PostRequestDto;
+import com.homework.homework_week2.post.dto.PostResponseDto;
 import com.homework.homework_week2.post.service.PostService;
 import com.homework.homework_week2.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController

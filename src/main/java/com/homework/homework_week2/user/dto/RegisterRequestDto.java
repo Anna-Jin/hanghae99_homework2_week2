@@ -3,7 +3,6 @@ package com.homework.homework_week2.user.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 

@@ -1,6 +1,5 @@
 package com.homework.homework_week2.user.service;
 
-import com.homework.homework_week2.common.S3UploadManager;
 import com.homework.homework_week2.config.security.jwt.JwtTokenProvider;
 import com.homework.homework_week2.user.domain.User;
 import com.homework.homework_week2.user.dto.RegisterRequestDto;

@@ -2,7 +2,6 @@ package com.homework.homework_week2.likes.domain;
 
 import com.homework.homework_week2.post.domain.Post;
 import com.homework.homework_week2.user.domain.User;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

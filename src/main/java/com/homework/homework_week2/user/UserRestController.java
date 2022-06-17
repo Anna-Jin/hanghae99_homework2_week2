@@ -5,7 +5,6 @@ import com.homework.homework_week2.user.dto.RegisterRequestDto;
 import com.homework.homework_week2.user.dto.UserResponseDto;
 import com.homework.homework_week2.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
