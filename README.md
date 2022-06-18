@@ -1,5 +1,7 @@
 # 항해99 2주차 과제
 
+🌱 [이슈관리] Chrome 확장프로그램인 [ZenHub](https://chrome.google.com/webstore/detail/zenhub-for-github/ogcgkffhplmphkaahpmffcafajaocjbd?hl=ko) 이용 
+
 <br>
 
 # 목차
