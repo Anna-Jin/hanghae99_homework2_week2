@@ -73,10 +73,11 @@ public class PostRestController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("/posts/{postId}")
     public ResponseEntity<ResponseMessage> updatePost(
+            @AuthenticationPrincipal User userDetails,
             @PathVariable(value = "postId", required = false) Long postId,
             @ModelAttribute PostRequestDto postRequestDto
     ) {
-        postService.updatePost(postId, postRequestDto);
+        postService.updatePost(userDetails, postId, postRequestDto);
         return ResponseEntity.ok().body(new ResponseMessage("게시물 수정 성공"));
     }
 

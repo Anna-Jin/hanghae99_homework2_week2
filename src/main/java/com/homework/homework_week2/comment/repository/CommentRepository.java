@@ -7,6 +7,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    Comment findCommentByUserAndId(User user, Long id);
-    void deleteCommentByUserAndId(User user, Long id);
 }

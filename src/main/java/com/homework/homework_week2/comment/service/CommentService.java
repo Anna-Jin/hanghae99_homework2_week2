@@ -50,7 +50,11 @@ public class CommentService {
      */
     @Transactional
     public void updateComment(User userDetails, Long commentId, CommentRequestDto commentRequestDto) {
-        Comment comment = commentRepository.findCommentByUserAndId(userDetails, commentId);
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
+
+        if (userDetails.getId() != comment.getUser().getId()) {
+            throw new IllegalArgumentException("자신의 댓글만 수정 가능합니다.");
+        }
 
         comment.update(commentRequestDto.getContent());
     }
@@ -61,6 +65,12 @@ public class CommentService {
      * @return
      */
     public void deleteComment(User userDetails, Long commentId) {
-        commentRepository.deleteCommentByUserAndId(userDetails, commentId);
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
+
+        if (userDetails.getId() != comment.getUser().getId()) {
+            throw new IllegalArgumentException("자신의 댓글만 삭제 가능합니다.");
+        }
+
+        commentRepository.deleteById(commentId);
     }
 }

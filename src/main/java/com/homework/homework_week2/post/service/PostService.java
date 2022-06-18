@@ -134,8 +134,12 @@ public class PostService {
      * @param postRequestDto
      * @return
      */
-    public void updatePost(Long postId, PostRequestDto postRequestDto) {
+    public void updatePost(User userDetails, Long postId, PostRequestDto postRequestDto) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
+
+        if (userDetails.getId() != post.getUser().getId()) {
+            throw new IllegalArgumentException("자신의 게시글만 수정 가능합니다.");
+        }
 
         // 게시글 수정
         // 기존에 있던 이미지를 삭제하고 새롭게 추가해야함
