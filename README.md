@@ -2,6 +2,31 @@
 
 <br>
 
+# 목차
+- [1. 공통 질문](#1-공통-질문)
+  * [전체 공통](#전체-공통)
+    + [프레임워크와 라이브러리의 차이점](#프레임워크와-라이브러리의-차이점)
+    + [코드를 구현할 때 예외 처리를 위해 무엇을 했나요?](#코드를-구현할-때-예외-처리를-위해-무엇을-했나요)
+  * [백엔드 공통](#백엔드-공통)
+    + [Restful이란?](#restful이란)
+    + [왜 Restful하게 짜야하나요? 참고글](#왜-restful하게-짜야하나요-참고글)
+    + [Restful의 장/단점](#restful의-장단점)
+    + [Restful의 대안은?](#restful의-대안은)
+    + [Restful하게 짜기 위해 무엇을 고려했나요?](#restful하게-짜기-위해-무엇을-고려했나요)
+  * [Spring](#spring)
+    + [Entity 설계를 위해 무엇을 하였나요? 연관관계에 근거하여 설명해주세요. **\<help wanted\>**](#entity-설계를-위해-무엇을-하였나요-연관관계에-근거하여-설명해주세요-help-wanted)
+- [2. Lv.2 Spring](#2-lv2-spring)
+  * [인증 / 인가](#인증--인가)
+    + [Token vs. Session](#token-vs-session)
+  * [CORS(Cross-Origin Resource Sharing)](#corscross-origin-resource-sharing)
+    + [CORS란?](#cors란)
+- [3. Trouble Shooting](#3-trouble-shooting)
+  * [Trouble Shoooting 목록](#trouble-shoooting-목록)
+
+<br>
+<br>
+
+
 # 1. 공통 질문
 
 ## 전체 공통
@@ -144,12 +169,92 @@ GraphQl - GraphQL은 Server API를 구성하기 위해 Facebook에서 만든 쿼
 
 ## CORS(Cross-Origin Resource Sharing)
 
-[CORS란? 작성 중](https://planet-punishment-427.notion.site/CORS-Cross-Origin-Resource-Sharing-74fc7e640084455996213822c9a6d703)
+### [CORS란?](https://planet-punishment-427.notion.site/CORS-Cross-Origin-Resource-Sharing-74fc7e640084455996213822c9a6d703)
 
+CORS는 한 출처에서 실행 중인 웹 애플리케이션이 다른 출처의 선택한 자원에 접근할 수 있는 권한을 부여하도록 브라우저에 알려주는 체제이다.
+CORS 정책 위반은 서버와 클라이언트 간의 출처가 다른 상황에서 API 요청을 할 때, SOP(Single-Origin Policy)에 의해 요청이 거부되면서 발생한다. 따라서, 이 정책을 우회하기 위해 CORS 설정을 통해 다른 출처의 접근을 허용해주어야한다.
+
+
+- 적용한 방식
+
+  - WebMvcConfigurer를 이용해 spring boot에서 CORS 허용 (Origin에 <code>*</code>로 모든 접근을 허용해 둔 부분은 특정 출처로 처리 필요)
+    ```Java
+    @Configuration
+    public class WebMvcConfig implements WebMvcConfigurer {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+          registry.addMapping("/**")
+                  .allowedOrigins("*")
+                  .allowedMethods("*") // 기타 설정
+                  .allowedHeaders("*")
+                  .allowCredentials(false)
+                  .maxAge(3600);
+      }
+    }
+    ```
+    
+    <br>
+    
+  - 추가로 Spring Security에서도 CORS 허용 로직 추가
+    ```Java
+    ... 어노테이션 생략
+
+    public class WebSecurityConfig {
+
+        ... 생략
+
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+            http
+                    .httpBasic().disable()
+                    .cors().configurationSource(corsConfigurationSource())
+                    .and()
+
+                    ... 나머지 생략
+
+            return http.build();
+        }
+
+        @Bean
+        CorsConfigurationSource corsConfigurationSource() {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+            configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT"));
+            configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+            configuration.setAllowCredentials(true);
+            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            source.registerCorsConfiguration("/**", configuration);
+            return source;
+        }
+    }
+    ```
+  
 
 <br>
 <br>
 
 # 3. Trouble Shooting
 
-## [Trouble Shoooting](https://planet-punishment-427.notion.site/0c4e6bd4ae194ede89b0d20825a5b1ec)
+## [Trouble Shoooting 목록](https://planet-punishment-427.notion.site/0c4e6bd4ae194ede89b0d20825a5b1ec)
+
+- [file upload - 415 unsurpported media type 에러](https://planet-punishment-427.notion.site/file-upload-415-unsurpported-media-type-5eeb4b3ff74446a2bd77c6872e22d9e2)
+
+- [Lombok으로 의존성 주입하기](https://planet-punishment-427.notion.site/Lombok-380397411aa34d26aaac3ecf8820fae7)
+
+- [예외처리 및 유효성 검사](https://planet-punishment-427.notion.site/f7b18f3e69234ddca96323854b74c7c7)
+  
+- [GenerationTarget encountered exception accepting command : Error executing DDL 경고](https://planet-punishment-427.notion.site/GenerationTarget-encountered-exception-accepting-command-Error-executing-DDL-8c0e43f539c44b5fa816ff824e6197a4)
+
+- [postService를 null로 반환하는 에러](https://planet-punishment-427.notion.site/postService-null-bfcd01d44b6b4cee87b884317051f622)
+
+- [Timestamp Format 변경하기](https://planet-punishment-427.notion.site/Timestamp-Format-1274a29da2464f45a35dfccd46ad409a)
+
+- [DataIntegrityViolationException 에러](https://planet-punishment-427.notion.site/DataIntegrityViolationException-c02ba680dbbd40dabb11af0c31ff39bc)
+
+- [application.yml 민감정보 .gitignore에 포함시키기](https://planet-punishment-427.notion.site/application-yml-gitignore-f3a002c31f654d7c989194d24a0e67eb)
+
+- [HttpMessageNotWritableException 에러](https://planet-punishment-427.notion.site/HttpMessageNotWritableException-83015d86480d43f2aa1b608ee8206d00)
+
+- [HttpRequestMethodNotSupportedException 에러](https://planet-punishment-427.notion.site/HttpRequestMethodNotSupportedException-bc43e66c610c4e8ba77d3903491ac9cf)
+
+- [[미해결]CORS 정책 위반](https://planet-punishment-427.notion.site/CORS-26ed3c35fe224450a4b317b6229fa50f)
