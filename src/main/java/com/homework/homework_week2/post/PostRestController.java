@@ -1,10 +1,12 @@
 package com.homework.homework_week2.post;
 
+import com.homework.homework_week2.common.ResponseMessage;
 import com.homework.homework_week2.post.dto.PostRequestDto;
 import com.homework.homework_week2.post.dto.PostResponseDto;
 import com.homework.homework_week2.post.service.PostService;
 import com.homework.homework_week2.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +28,13 @@ public class PostRestController {
      */
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/posts")
-    public boolean addPost(
+    public ResponseEntity<ResponseMessage> addPost(
             @AuthenticationPrincipal User userDetails,
             @ModelAttribute PostRequestDto postRequestDto
             ) {
-        return postService.addPost(userDetails, postRequestDto);
+        postService.addPost(userDetails, postRequestDto);
+
+        return ResponseEntity.ok().body(new ResponseMessage("게시물 등록 성공"));
     }
 
     /**
@@ -68,12 +72,12 @@ public class PostRestController {
      */
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("/posts/{postId}")
-    public boolean updatePost(
+    public ResponseEntity<ResponseMessage> updatePost(
             @PathVariable(value = "postId", required = false) Long postId,
             @ModelAttribute PostRequestDto postRequestDto
     ) {
         postService.updatePost(postId, postRequestDto);
-        return true;
+        return ResponseEntity.ok().body(new ResponseMessage("게시물 수정 성공"));
     }
 
     /**
@@ -84,10 +88,10 @@ public class PostRestController {
      */
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/posts/{postId}")
-    public boolean deletePost(
+    public ResponseEntity<ResponseMessage> deletePost(
             @AuthenticationPrincipal User userDetails,
             @PathVariable(value = "postId", required = false) Long postId) {
         postService.deletePost(userDetails, postId);
-        return true;
+        return ResponseEntity.ok().body(new ResponseMessage("게시물 삭제 성공"));
     }
 }

@@ -1,10 +1,14 @@
 package com.homework.homework_week2.comment;
 
+import com.amazonaws.Response;
 import com.homework.homework_week2.comment.service.CommentService;
 import com.homework.homework_week2.comment.dto.CommentRequestDto;
+import com.homework.homework_week2.common.ResponseMessage;
 import com.homework.homework_week2.exception.errorCode.CustomErrorCode;
 import com.homework.homework_week2.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +26,17 @@ public class CommentRestController {
      * @return
      */
     @PostMapping("/comments/{postId}")
-    public boolean addComment(
+    public ResponseEntity<ResponseMessage> addComment(
             @AuthenticationPrincipal User userDetails,
             @PathVariable(value = "postId", required = false) Long postId,
             @RequestBody CommentRequestDto commentRequestDto
             ) {
+        if (userDetails == null) {
+            throw new IllegalArgumentException(CustomErrorCode.ERROR_USER_NOT_EXISTS.getMessage());
+        }
+        commentService.addComment(userDetails, postId, commentRequestDto);
 
-        return commentService.addComment(userDetails, postId, commentRequestDto);
+        return ResponseEntity.ok().body(new ResponseMessage("댓글 등록 성공"));
     }
 
     /**
@@ -38,17 +46,13 @@ public class CommentRestController {
      * @return
      */
     @PutMapping("/comments/{commentId}")
-    public boolean updateComment(
+    public ResponseEntity<ResponseMessage> updateComment(
             @AuthenticationPrincipal User userDetails,
             @PathVariable(required = false) Long commentId,
             @RequestBody CommentRequestDto commentRequestDto
     ) {
-        if (userDetails == null) {
-            throw new IllegalArgumentException(CustomErrorCode.ERROR_LOGIN_NECESSARY.getMessage());
-        }
-
         commentService.updateComment(userDetails, commentId, commentRequestDto);
-        return true;
+        return ResponseEntity.ok().body(new ResponseMessage("댓글 수정 성공"));
     }
 
     /**
@@ -56,16 +60,13 @@ public class CommentRestController {
      * @param commentId
      * @return
      */
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/comments/{commentId}")
-    public boolean deleteComment(
+    public ResponseEntity<ResponseMessage> deleteComment(
             @AuthenticationPrincipal User userDetails,
             @PathVariable(required = false) Long commentId
     ) {
-        if (userDetails == null) {
-            throw new IllegalArgumentException(CustomErrorCode.ERROR_LOGIN_NECESSARY.getMessage());
-        }
-
         commentService.deleteComment(userDetails, commentId);
-        return true;
+        return ResponseEntity.ok().body(new ResponseMessage("댓글 삭제 성공"));
     }
 }

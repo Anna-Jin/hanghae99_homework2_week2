@@ -29,7 +29,7 @@ public class CommentService {
      * @param commentRequestDto
      * @return
      */
-    public boolean addComment(User userDetails, Long postId, CommentRequestDto commentRequestDto) {
+    public void addComment(User userDetails, Long postId, CommentRequestDto commentRequestDto) {
         User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
 
@@ -40,8 +40,6 @@ public class CommentService {
                 .build();
 
         commentRepository.save(comment);
-
-        return true;
     }
 
     /**
@@ -51,12 +49,10 @@ public class CommentService {
      * @return
      */
     @Transactional
-    public boolean updateComment(User userDetails, Long commentId, CommentRequestDto commentRequestDto) {
+    public void updateComment(User userDetails, Long commentId, CommentRequestDto commentRequestDto) {
         Comment comment = commentRepository.findCommentByUserAndId(userDetails, commentId);
 
         comment.update(commentRequestDto.getContent());
-
-        return true;
     }
 
     /**
@@ -64,8 +60,7 @@ public class CommentService {
      * @param commentId
      * @return
      */
-    public boolean deleteComment(User userDetails, Long commentId) {
+    public void deleteComment(User userDetails, Long commentId) {
         commentRepository.deleteCommentByUserAndId(userDetails, commentId);
-        return true;
     }
 }

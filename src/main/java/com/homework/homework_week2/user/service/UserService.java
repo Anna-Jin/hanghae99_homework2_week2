@@ -27,7 +27,7 @@ public class UserService {
      * @param requestDto
      * @return
      */
-    public boolean register(RegisterRequestDto requestDto) {
+    public void register(RegisterRequestDto requestDto) {
         // 이메일 중복 검사
         Optional<User> found = userRepository.findByEmail(requestDto.getEmail());
         if (found.isPresent()) {
@@ -43,8 +43,6 @@ public class UserService {
                 .introduce(requestDto.getIntroduce())
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build());
-
-        return true;
     }
 
     /**

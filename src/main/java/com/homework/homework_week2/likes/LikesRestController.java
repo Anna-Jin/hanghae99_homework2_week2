@@ -1,8 +1,11 @@
 package com.homework.homework_week2.likes;
 
+import com.homework.homework_week2.common.ResponseMessage;
 import com.homework.homework_week2.likes.service.LikesService;
 import com.homework.homework_week2.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +22,8 @@ public class LikesRestController {
      * @param postId
      * @return
      */
-    @PostMapping("/posts/{postId}/like")
-    public boolean addlikes(
+    @RequestMapping(value = "/posts/{postId}/like", method = {RequestMethod.POST, RequestMethod.DELETE})
+    public ResponseEntity<ResponseMessage> addLikes(
             @AuthenticationPrincipal User userDetails,
             @PathVariable(required = false) Long postId
     ) {
@@ -28,22 +31,21 @@ public class LikesRestController {
             throw new IllegalArgumentException("로그인이 필요합니다.");
         }
 
-        likesService.addlikes(userDetails, postId);
-        return true;
+        return ResponseEntity.ok().body(likesService.likes(userDetails, postId));
     }
 
-    /**
-     * 좋아요 취소
-     * @param userDetails
-     * @param postId
-     * @return
-     */
-    @DeleteMapping("/posts/{postId}/like")
-    public boolean deletelikes(
-            @AuthenticationPrincipal User userDetails,
-            @PathVariable(required = false) Long postId
-    ) {
-        likesService.deletelikes(userDetails, postId);
-        return true;
-    }
+//    /**
+//     * 좋아요 취소
+//     * @param userDetails
+//     * @param postId
+//     * @return
+//     */
+//    @RequestMapping("/posts/{postId}/like")
+//    public boolean deleteLikes(
+//            @AuthenticationPrincipal User userDetails,
+//            @PathVariable(required = false) Long postId
+//    ) {
+//        likesService.deletelikes(userDetails, postId);
+//        return true;
+//    }
 }

@@ -34,7 +34,7 @@ public class PostService {
      * @param postRequestDto
      * @return
      */
-    public boolean addPost(User userDetails, PostRequestDto postRequestDto) {
+    public void addPost(User userDetails, PostRequestDto postRequestDto) {
         User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
 
         Post post = Post.builder()
@@ -46,8 +46,6 @@ public class PostService {
                 .build();
 
         postRepository.save(post);
-
-        return true;
     }
 
     /**
@@ -136,7 +134,7 @@ public class PostService {
      * @param postRequestDto
      * @return
      */
-    public boolean updatePost(Long postId, PostRequestDto postRequestDto) {
+    public void updatePost(Long postId, PostRequestDto postRequestDto) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
 
         // 게시글 수정
@@ -146,8 +144,6 @@ public class PostService {
         post.update(postRequestDto.getTitle(),
                 postRequestDto.getContent(),
                 s3UploadManager.uploadFile(postRequestDto.getFile()));
-
-        return true;
     }
 
     /**
@@ -157,7 +153,7 @@ public class PostService {
      * @return
      */
     @Transactional
-    public boolean deletePost(User userDetails, Long postId) {
+    public void deletePost(User userDetails, Long postId) {
         // 글 삭제
         User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당하는 사용자가 존재하지 않습니다."));
 
@@ -167,7 +163,6 @@ public class PostService {
 
         // 게시물 삭제
         postRepository.deletePostByUserAndId(user, postId);
-        return true;
     }
 
 
