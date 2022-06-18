@@ -3,6 +3,7 @@ package com.homework.homework_week2.user;
 import com.homework.homework_week2.common.ResponseMessage;
 import com.homework.homework_week2.exception.errorCode.CustomErrorCode;
 import com.homework.homework_week2.user.domain.User;
+import com.homework.homework_week2.user.dto.LoginDto;
 import com.homework.homework_week2.user.dto.RegisterRequestDto;
 import com.homework.homework_week2.user.dto.UserResponseDto;
 import com.homework.homework_week2.user.service.UserService;
@@ -29,7 +30,7 @@ public class UserRestController {
     @PostMapping("/register")
     public ResponseEntity<ResponseMessage> register(
             @AuthenticationPrincipal User userDetails,
-            @ModelAttribute @Valid RegisterRequestDto requestDto) {
+            @RequestBody @Valid RegisterRequestDto requestDto) {
 
         if (userDetails != null) {
             throw new IllegalArgumentException(CustomErrorCode.ERROR_LOGIN_NECESSARY.getMessage());
@@ -47,14 +48,13 @@ public class UserRestController {
     @PostMapping("/login")
     public String login(
             @AuthenticationPrincipal User userDetails,
-            @RequestParam String email,
-            @RequestParam String password
-    ) {
+            @RequestBody LoginDto loginDto
+            ) {
         if (userDetails != null) {
             throw new IllegalArgumentException(CustomErrorCode.ERROR_LOGIN_NECESSARY.getMessage());
         }
 
-        return userService.login(email, password);
+        return userService.login(loginDto);
     }
 
     /**

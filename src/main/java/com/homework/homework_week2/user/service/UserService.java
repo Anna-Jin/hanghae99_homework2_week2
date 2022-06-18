@@ -2,6 +2,7 @@ package com.homework.homework_week2.user.service;
 
 import com.homework.homework_week2.config.security.jwt.JwtTokenProvider;
 import com.homework.homework_week2.user.domain.User;
+import com.homework.homework_week2.user.dto.LoginDto;
 import com.homework.homework_week2.user.dto.RegisterRequestDto;
 import com.homework.homework_week2.user.dto.UserResponseDto;
 import com.homework.homework_week2.user.repository.UserRepository;
@@ -51,14 +52,13 @@ public class UserService {
 
     /**
      * 로그인
-     * @param email
-     * @param password
+     * @param loginDto
      * @return
      */
-    public String login(String email, String password) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("이메일을 확인해주세요."));
+    public String login(LoginDto loginDto) {
+        User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow(() -> new IllegalArgumentException("이메일을 확인해주세요."));
 
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("패스워드를 확인해주세요.");
         }
 
