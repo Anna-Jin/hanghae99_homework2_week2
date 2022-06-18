@@ -20,13 +20,5 @@ public class RegisterRequestDto {
     @Size(min = 4, max = 20, message = "비밀번호는 최소 4자 이상이어야합니다.")
     private String password;
 
-
-    // 비밀번호에 닉네임이 들어있는 지 유효성 검사
-    // 조건이 True 이면 에러 반환
-    @AssertFalse(message = "비밀번호에는 닉네임과 같은 단어를 포함할 수 없습니다.")
-    public boolean isValidPassword() {
-        return this.password.contains(this.nickname);
-    }
-
     private String introduce = "자기소개를 입력해주세요";
 }
