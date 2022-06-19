@@ -197,39 +197,8 @@ CORS 정책 위반은 서버와 클라이언트 간의 출처가 다른 상황�
     
     <br>
     
-  - 추가로 Spring Security에서도 CORS 허용 로직 추가
-    ```Java
-    ... 어노테이션 생략
-
-    public class WebSecurityConfig {
-
-        ... 생략
-
-        @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            http
-                    .httpBasic().disable()
-                    .cors().configurationSource(corsConfigurationSource())
-                    .and()
-
-                    ... 나머지 생략
-
-            return http.build();
-        }
-
-        @Bean
-        CorsConfigurationSource corsConfigurationSource() {
-            CorsConfiguration configuration = new CorsConfiguration();
-            configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-            configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT"));
-            configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
-            configuration.setAllowCredentials(true);
-            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            source.registerCorsConfiguration("/**", configuration);
-            return source;
-        }
-    }
-    ```
+  - **주의**
+   CORS 정책을 허용해줄 때, Spring Security와 Spring boot 양쪽에서 CORS 정책 허용 로직을 구현해두면 Access-Control-Allow-Origin이 header에 중복으로 보내지기 때문에 문제가 발생한다고 한다.
   
 
 <br>
