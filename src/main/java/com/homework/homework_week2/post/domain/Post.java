@@ -3,6 +3,7 @@ package com.homework.homework_week2.post.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.homework.homework_week2.comment.domain.Comment;
+import com.homework.homework_week2.likes.domain.Likes;
 import com.homework.homework_week2.timestamp.Timestamped;
 import com.homework.homework_week2.user.domain.User;
 import lombok.Builder;
@@ -48,6 +49,9 @@ public class Post extends Timestamped {
     @OrderBy(value = "createdAt DESC")
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Likes> likes;
 
     @Builder
     public Post(String title, String content, int template, String imageUrl, User user) {

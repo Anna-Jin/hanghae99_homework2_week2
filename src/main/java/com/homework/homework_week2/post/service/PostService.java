@@ -158,7 +158,6 @@ public class PostService {
      * @param postId
      * @return
      */
-    @Transactional
     public void deletePost(User userDetails, Long postId) {
         User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당하는 사용자가 존재하지 않습니다."));
 
@@ -167,7 +166,9 @@ public class PostService {
         s3UploadManager.deleteFile(post.getImageUrl());
 
         // 게시물 삭제
-        postRepository.deletePostByUserAndId(user, postId);
+        if (user == post.getUser()) {
+            postRepository.deleteById(postId);
+        }
     }
 
 

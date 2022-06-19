@@ -50,11 +50,14 @@ public class S3UploadManager {
         }
 
 
-        return fileName;
+        return String.format("https://%s.s3.amazonaws.com/%s", bucket, fileName);
     }
 
-    public void deleteFile(String fileName) {
-        amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
+    public void deleteFile(String imageUrl) {
+        if (!imageUrl.equals("")) {
+            String fileName = imageUrl.split("/")[3];
+            amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
+        }
     }
 
     private String createFileName(String fileName) { // 먼저 파일 업로드 시, 파일명을 난수화하기 위해 random으로 돌립니다.
