@@ -42,13 +42,15 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .httpBasic().disable() // rest api 만을 고려하여 기본 설정은 해제하겠습니다.
+                .httpBasic().disable()
+//                .cors().configurationSource(corsConfigurationSource())
+//                .and()// rest api 만을 고려하여 기본 설정은 해제하겠습니다.
                 .csrf().disable() // csrf 보안 토큰 disable처리.
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 역시 사용하지 않습니다.
                 .and()
                 .authorizeRequests() // 요청에 대한 사용권한 체크
                 // 그외 나머지 요청은 누구나 접근 가능
-                .antMatchers("/api/user/**", "/api/comments/**").hasRole("USER")
+                .mvcMatchers("/api/user/**", "/api/comments/**", "/api/post/{postId}/like").hasRole("USER")
                 .anyRequest()
                 .permitAll()
                 .and()
@@ -58,4 +60,16 @@ public class WebSecurityConfig {
 
         return http.build();
     }
+
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+//        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT"));
+//        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+//        configuration.setAllowCredentials(true);
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 }

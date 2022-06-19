@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LikesRestController {
 
     private final LikesService likesService;
@@ -23,7 +23,7 @@ public class LikesRestController {
      * @param postId
      * @return
      */
-    @RequestMapping(value = "/posts/{postId}/like", method = {RequestMethod.POST, RequestMethod.DELETE})
+    @RequestMapping(value = "/posts/{postId}/like", method = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
     public ResponseEntity<ResponseMessage> addLikes(
             @AuthenticationPrincipal User userDetails,
             @PathVariable(required = false) Long postId
