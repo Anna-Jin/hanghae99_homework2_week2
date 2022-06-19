@@ -228,4 +228,6 @@ CORS 정책 위반은 서버와 클라이언트 간의 출처가 다른 상황�
 
 - [HttpRequestMethodNotSupportedException 에러](https://planet-punishment-427.notion.site/HttpRequestMethodNotSupportedException-bc43e66c610c4e8ba77d3903491ac9cf)
 
-- [[미해결]CORS 정책 위반](https://planet-punishment-427.notion.site/CORS-26ed3c35fe224450a4b317b6229fa50f)
+- [CORS 정책 위반](https://planet-punishment-427.notion.site/CORS-26ed3c35fe224450a4b317b6229fa50f)
+
+- [Invalid character found in the request target. The valid characters are defined in RFC 7230 and RFC 3986 에러](https://planet-punishment-427.notion.site/Invalid-character-found-in-the-request-target-The-valid-characters-are-defined-in-RFC-7230-and-RFC--eb8d186bd6b147909bb2ea78e1025dfa)
