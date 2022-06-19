@@ -30,6 +30,11 @@ public class S3UploadManager {
     private final AmazonS3 amazonS3;
 
     public String uploadFile(MultipartFile file) {
+
+        if (file == null) {
+            return "";
+        }
+
         // 파일은 단건만 추가 가능
         String fileName = createFileName(file.getOriginalFilename());
 

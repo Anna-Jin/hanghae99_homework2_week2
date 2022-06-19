@@ -42,7 +42,7 @@ public class User extends Timestamped implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, columnDefinition = "text", length = 1000)
+    @Column(nullable = false, length = 1000)
     private String introduce;
 
     // 연관관계 매핑
