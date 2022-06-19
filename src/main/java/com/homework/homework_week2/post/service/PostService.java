@@ -158,7 +158,6 @@ public class PostService {
      */
     @Transactional
     public void deletePost(User userDetails, Long postId) {
-        // 글 삭제
         User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당하는 사용자가 존재하지 않습니다."));
 
         // 게시물 삭제 전에 s3에 있는 이미지부터 삭제해야함
@@ -179,6 +178,8 @@ public class PostService {
                 .content(post.getContent())
                 .template(post.getTemplate())
                 .imageUrl(post.getImageUrl())
+                .nickname(user.getNickname())
+                .email(user.getEmail())
                 .comments(post.getComments().stream()
                         .map(CommentResponseDto::new)
                         .collect(Collectors.toList()))

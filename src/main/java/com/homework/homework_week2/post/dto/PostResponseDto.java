@@ -15,6 +15,8 @@ public class PostResponseDto {
     private String content;
     private int template;
     private String imageUrl;
+    private String nickname;
+    private String email;
     private Long viewCount;
     private List<CommentResponseDto> comments;
     private String createdAt;
