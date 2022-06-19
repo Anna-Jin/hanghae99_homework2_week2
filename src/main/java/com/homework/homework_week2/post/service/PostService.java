@@ -41,7 +41,7 @@ public class PostService {
                 .title(postRequestDto.getTitle())
                 .content(postRequestDto.getContent())
                 .template(postRequestDto.getTemplate())
-                .imageUrl(s3UploadManager.uploadFile(postRequestDto.getFile()))
+                .imageUrl(s3UploadManager.uploadFile(postRequestDto.getImage()))
                 .user(user)
                 .build();
 
@@ -94,6 +94,8 @@ public class PostService {
                     .content(post.getContent())
                     .template(post.getTemplate())
                     .imageUrl(post.getImageUrl())
+                    .nickname(post.getUser().getNickname())
+                    .email(post.getUser().getEmail())
                     .comments(post.getComments().stream()
                             .map(CommentResponseDto::new)
                             .collect(Collectors.toList()))
@@ -147,7 +149,7 @@ public class PostService {
 
         post.update(postRequestDto.getTitle(),
                 postRequestDto.getContent(),
-                s3UploadManager.uploadFile(postRequestDto.getFile()));
+                s3UploadManager.uploadFile(postRequestDto.getImage()));
     }
 
     /**
@@ -178,8 +180,8 @@ public class PostService {
                 .content(post.getContent())
                 .template(post.getTemplate())
                 .imageUrl(post.getImageUrl())
-                .nickname(user.getNickname())
-                .email(user.getEmail())
+                .nickname(post.getUser().getNickname())
+                .email(post.getUser().getEmail())
                 .comments(post.getComments().stream()
                         .map(CommentResponseDto::new)
                         .collect(Collectors.toList()))
