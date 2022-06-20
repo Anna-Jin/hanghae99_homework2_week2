@@ -89,7 +89,7 @@ public class PostService {
 
             // entity -> dto without likeByMe
             PostResponseDto postResponseDto = PostResponseDto.builder()
-                    .postId(post.getId())
+                    .id(post.getId())
                     .title(post.getTitle())
                     .content(post.getContent())
                     .template(post.getTemplate())
@@ -176,7 +176,7 @@ public class PostService {
 
         // entity -> dto
         PostResponseDto postResponseDto = PostResponseDto.builder()
-                .postId(post.getId())
+                .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .template(post.getTemplate())

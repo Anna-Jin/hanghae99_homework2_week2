@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Builder @AllArgsConstructor
 public class PostResponseDto {
-    private Long postId;
+    private Long id;
     private String title;
     private String content;
     private int template;
