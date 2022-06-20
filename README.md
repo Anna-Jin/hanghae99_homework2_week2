@@ -121,11 +121,11 @@ GraphQl - GraphQL은 Server API를 구성하기 위해 Facebook에서 만든 쿼
 
 - User <-> Post
 
-  <code>1:N</code> <-> <code>N:1</code> 양방향 매핑
+  `1:N` <-> `N:1` 양방향 매핑
   
 - Post <-> Comment
 
-  <code>1:N</code> <-> <code>N:1</code> 양방향 매핑
+  `1:N` <-> `N:1` 양방향 매핑
   
 <br>
 
@@ -138,9 +138,9 @@ GraphQl - GraphQL은 Server API를 구성하기 위해 Facebook에서 만든 쿼
 
 <br>
   
-- User, Post -> Likes
+- User, Post <-> Likes
 
-  -> <code>N:1</code> 단방향 매핑
+  `1:N` <-> `N:1` 단방향 매핑
   
   
 <br>
