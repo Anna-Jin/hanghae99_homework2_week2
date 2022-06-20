@@ -43,7 +43,8 @@ public class PostRestController {
      * @return
      */
     @GetMapping("/posts")
-    public List<PostResponseDto> getPosts(@AuthenticationPrincipal User userDetails) {
+    public List<PostResponseDto> getPosts(
+            @AuthenticationPrincipal User userDetails) {
         if (userDetails == null) {
             return postService.getPosts();
         }

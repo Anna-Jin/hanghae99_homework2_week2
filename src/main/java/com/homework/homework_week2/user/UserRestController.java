@@ -14,6 +14,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,12 +44,12 @@ public class UserRestController {
 
     /**
      * 로그인
-     * @param email
-     * @param password
+     * @param userDetails
+     * @param loginDto
      * @return
      */
     @PostMapping("/login")
-    public String login(
+    public Map<String, String> login(
             @AuthenticationPrincipal User userDetails,
             @RequestBody LoginDto loginDto
             ) {
@@ -55,7 +57,10 @@ public class UserRestController {
             throw new IllegalArgumentException(CustomErrorCode.ERROR_LOGIN_NECESSARY.getMessage());
         }
 
-        return userService.login(loginDto);
+        Map<String, String> userToken = new HashMap<>();
+        userToken.put("userToken", userService.login(loginDto));
+
+        return userToken;
     }
 
     /**

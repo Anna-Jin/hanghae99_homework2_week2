@@ -50,7 +50,7 @@ public class WebSecurityConfig {
                 .and()
                 .authorizeRequests() // 요청에 대한 사용권한 체크
                 // 그외 나머지 요청은 누구나 접근 가능
-                .mvcMatchers("/api/user/**", "/api/comments/**", "/api/post/{postId}/like").hasRole("USER")
+                .mvcMatchers("/api/comments/**", "/api/post/{postId}/like").hasRole("USER")
                 .anyRequest()
                 .permitAll()
                 .and()
