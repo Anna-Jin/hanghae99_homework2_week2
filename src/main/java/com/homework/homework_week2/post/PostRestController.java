@@ -6,6 +6,7 @@ import com.homework.homework_week2.post.dto.PostResponseDto;
 import com.homework.homework_week2.post.service.PostService;
 import com.homework.homework_week2.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -44,12 +45,13 @@ public class PostRestController {
      */
     @GetMapping("/posts")
     public List<PostResponseDto> getPosts(
-            @AuthenticationPrincipal User userDetails) {
+            @AuthenticationPrincipal User userDetails,
+            Pageable pageable) {
         if (userDetails == null) {
-            return postService.getPosts();
+            return postService.getPosts(pageable);
         }
 
-        return postService.getPostsByUser(userDetails);
+        return postService.getPostsByUser(userDetails, pageable);
     }
 
     /**

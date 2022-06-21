@@ -10,6 +10,7 @@ import com.homework.homework_week2.post.repository.PostRepository;
 import com.homework.homework_week2.user.domain.User;
 import com.homework.homework_week2.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -52,9 +53,9 @@ public class PostService {
      * 게시물 목록 조회 By user
      * @return
      */
-    public List<PostResponseDto> getPostsByUser(User userDetails) {
+    public List<PostResponseDto> getPostsByUser(User userDetails, Pageable pageable) {
         User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
-        List<Post> foundPosts = postRepository.findAllByOrderByLikeCountDesc();
+        List<Post> foundPosts = postRepository.findAllByOrderByLikeCountDesc(pageable);
 
         List<PostResponseDto> posts = new ArrayList<>();
 
@@ -76,8 +77,8 @@ public class PostService {
      * 게시물 목록 조회 without user
      * @return
      */
-    public List<PostResponseDto> getPosts() {
-        List<Post> foundPosts = postRepository.findAllByOrderByLikeCountDesc();
+    public List<PostResponseDto> getPosts(Pageable pageable) {
+        List<Post> foundPosts = postRepository.findAllByOrderByLikeCountDesc(pageable);
 
         List<PostResponseDto> posts = new ArrayList<>();
 
